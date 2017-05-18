@@ -6,8 +6,8 @@ package main
 
 import (
 	"html/template"
-	//"fmt"
-	"encoding/json"
+	"fmt"
+	// "encoding/json"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -93,21 +93,21 @@ func smartUiHandler(w http.ResponseWriter, r *http.Request, title string) {
 
 func applyHandler(w http.ResponseWriter, r *http.Request, title string) {
 	log.Println("come to " + title+".html")
-	var cfg Cfg
-	json.NewDecoder(r.Body).Decode(&cfg)
-	log.Println("json received")
-	log.Println(cfg)
 
+	// var cfg Cfg
+	// json.NewDecoder(r.Body).Decode(&cfg)
+	// log.Println(cfg)
 
-    // var prettyJSON bytes.Buffer
-    // error := json.Indent(&prettyJSON, r.Body, "", "\t")
-    // if error != nil {
-    //     log.Println("JSON parse error: ", error)
-    //     App.BadRequest(w)
-    //     return
-    // }
+    result, _:= ioutil.ReadAll(r.Body)  
+    r.Body.Close()  
+    fmt.Printf("%s\n", result)
+	p := &Page{Title: title, Body: result}
+	err := p.save()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-    // log.Println("CSP Violation:", string(prettyJSON.Bytes()))
 }
 
 var templates = template.Must(template.ParseFiles("edit.html", "view.html"))

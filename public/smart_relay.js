@@ -27,9 +27,11 @@ $(document).ready(function(){
         myData['vender'] = venderValue;
         myData['device'] = deviceValue;
         console.log(myData);
+
+
         var aj = $.ajax( {    
         url:'apply',  
-        data:myData,
+        data: '{"mode":"fifo", "policy" : [{"scope": "1.1.1.1-1.1.1.255", "deviceclass": "stb", "vendor": "arris"},{"scope": "2.1.1.1-1.1.1.255", "deviceclass": "host", "vendor": "cisco"},{"scope": "3.1.1.1-1.1.1.255", "deviceclass": "cm", "vendor": "sa"}]}',
         type:'post',    
         cache:true,  
         dataType:'json',    
@@ -42,7 +44,6 @@ $(document).ready(function(){
             //});   
         },    
         error : function() {    
-            // view("异常！");    
             alert("异常！");    
         }    
         });  
