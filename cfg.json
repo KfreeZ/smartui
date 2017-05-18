@@ -1,0 +1,20 @@
+{
+	{"mode": "balanced"},
+	policies: [
+		{
+		"scope": "1.1.1.1-1.1.1.255"，
+		"device_class": "stb"，
+		"vender": "arris"
+		},
+		{
+		"scope": "2.2.2.2-2.2.2.225"，
+		"device_class": "host"，
+		"vender": "null"
+		},
+		{
+		"scope": "3.3.3.3-3.3.3.225"，
+		"device_class": "cm"，
+		"vender": "cisco"
+		}
+	]
+}

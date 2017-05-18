@@ -1,0 +1,30 @@
+body{
+    padding-top: 70px;
+    /*background-color:#CCC;*/
+}
+
+hr.divider{
+    margin:40px 0;
+}
+
+hr.divider1{
+    margin:20px 0;
+}
+
+hr.divider2{
+    margin:30px 0;
+}
+
+p.tabp2{
+    text-align:center;
+}
+
+.feature{
+    padding:30px 0;
+}
+.feature-heading{
+    text-align:center;
+    fonsize:50px;
+    color: #2a6496;
+    margin-top:50px;
+}
