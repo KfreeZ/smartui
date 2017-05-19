@@ -110,6 +110,25 @@ func applyHandler(w http.ResponseWriter, r *http.Request, title string) {
 
 }
 
+func updateHandler(w http.ResponseWriter, r *http.Request, title string) {
+	log.Println("come to " + title+".html")
+
+	// var cfg Cfg
+	// json.NewDecoder(r.Body).Decode(&cfg)
+	// log.Println(cfg)
+
+    result, _:= ioutil.ReadAll(r.Body)  
+    r.Body.Close()  
+    fmt.Printf("%s\n", result)
+	p := &Page{Title: title, Body: result}
+	err := p.save()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+}
+
 var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
 var sr_tmplt = template.Must(template.ParseFiles("index.html"))
 
@@ -140,6 +159,7 @@ func main() {
 	// http.HandleFunc("/save/", makeHandler(saveHandler))
 	http.HandleFunc("/smartui/index", makeHandler(smartUiHandler))
 	http.HandleFunc("/smartui/apply", makeHandler(applyHandler))
+	http.HandleFunc("/smartui/update", makeHandler(updateHandler))
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	

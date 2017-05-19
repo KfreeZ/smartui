@@ -80,7 +80,7 @@ $(document).ready(function(){
 
 
         var aj = $.ajax( {    
-        url:'productManager_reverseUpdate',  
+        url:'apply',  
         data:myData,
         type:'post',    
         cache:true,  
@@ -92,7 +92,7 @@ $(document).ready(function(){
             var jsonObj = JSON.parse(data);    //获得jsonObj对象
             var used = jsonObj.dhcpstatus[0].used;
             var total = jsonObj.dhcpstatus[0].total;
-            $("#scope0_occupancy").html("total:"+total+"; used:"+used); 
+            $("#apply").html("total:"+total+"; used:"+used); 
             $("#modeType").text("Mode");
             $("#vendorMode0").text("Vendor");
             $("#deviceMode0").text("Device"); 
