@@ -1,70 +1,173 @@
 $(document).ready(function(){
     var btn = document.getElementById('applyBtn');
-    var vender = document.getElementById('vender');
-    // var detail_scope1 = document.getElementById("detail1");
-    // console.log(detail_scope1);
-    console.log(vender);
-    var venderValue;
-    var deviceValue;
+    var vendor = document.getElementById('vendor');
+    var detail_scope0 = document.getElementById("detail0");
+    var detail_scope1 = document.getElementById("detail1");
+    // console.log(detail_scope0);
+    console.log(vendor);
     var modeValue;
+    var vendorValue = new Array(3);
+    var deviceValue= new Array(3);
 
     $("#mode li").click(function () {
-        modeValue = $(this).text(); //获取点击li的值      
-    });
-    $("#vender li").click(function () {
-        venderValue = $(this).text(); //获取点击li的值      
-    });
-    $("#device li").click(function () {
-        deviceValue = $(this).text(); //获取点击li的值      
+        // console.log('click');
+        modeValue = $(this).text();       //获取点击li的值   
+        console.log(modeValue)
+        $("#modeType").text(modeValue);
     });
 
+    // scope0 config
+    $("#vendor0 li").click(function () {
+        vendorValue[0] = $(this).text(); 
+        $("#vendorMode0").text(vendorValue[0]);  
+    });
+    $("#device0 li").click(function () {
+        deviceValue[0] = $(this).text();  
+        $("#deviceMode0").text(deviceValue[0]); 
+    });
+
+    // scope1 config
+    $("#vendor1 li").click(function () {
+        vendorValue[1] = $(this).text(); 
+        $("#vendorMode0").text(vendorValue[1]);  
+    });
+    $("#device1 li").click(function () {
+        deviceValue[1] = $(this).text();  
+        $("#deviceMode1").text(deviceValue[1]); 
+    });
+
+
     btn.addEventListener('click', function(){
-    
-        var myData = {};
-        var scopes = {};
-        
-        myData['mode'] = modeValue;
-        myData['vender'] = venderValue;
-        myData['device'] = deviceValue;
-        console.log(myData);
+
+                    // test occupancy refresh after apply attach
+                    var jsonObj = {"dhcpstatus" : 
+                                    [
+                                      {"scope": "1.1.1.1-1.1.1.255", "total": 100, "used": "20"},
+                                      {"scope": "2.1.1.1-1.1.1.255", "total": 50, "used": "30"},
+                                      {"scope": "3.1.1.1-1.1.1.255", "total": 25, "used": "40"}
+                                    ]
+                                  } 
+                    console.log("post dataobject to server"+jsonObj)
+                    var used = jsonObj.dhcpstatus[0].used;
+                    var total = jsonObj.dhcpstatus[0].total;
+                    // console.log(used + "  " + total)
+                    $("#scope0_occupancy").html("total:"+total+"; used:"+used);
+                    // var occup= (used/total)*100;
+                    // $("#scope0_occupancy").style.width = occup+"%";
+
+        var myData = {  "mode": modeValue,
+                        "policies":[
+                                      {
+                                        "scope": $("#scop0").text(), 
+                                        "device_class": deviceValue[0],
+                                        "vendor": vendorValue[0]
+                                      },
+
+                                      {
+                                        "scope": $("#scop1").text(), 
+                                        "device_class": deviceValue[1],
+                                        "vendor": vendorValue[1]
+                                      }
+
+                                    ]
+                      };
+        console.log("attach apply-btn post data"+myData);
+        $("#modeType").text("Mode");
+        $("#vendorMode0").text("Vendor");
+        $("#deviceMode0").text("Device");
+        $("#vendorMode1").text("Vendor");
+        $("#deviceMode1").text("Device");  
 
 
         var aj = $.ajax( {    
-        url:'apply',  
-        data: '{"mode":"fifo", "policy" : [{"scope": "1.1.1.1-1.1.1.255", "deviceclass": "stb", "vendor": "arris"},{"scope": "2.1.1.1-1.1.1.255", "deviceclass": "host", "vendor": "cisco"},{"scope": "3.1.1.1-1.1.1.255", "deviceclass": "cm", "vendor": "sa"}]}',
+        url:'productManager_reverseUpdate',  
+        data:myData,
         type:'post',    
         cache:true,  
-        dataType:'json',    
-        success:function() {
+        dataType:'json', 
+   
+        success:function(data) {   
             console.log(data);
-            // ajax_refresh_occupancy            
-            //$.get("refresh",function(data){
-                 
-            //    $("#scope1_occupancy").innerHTML()
-            //});   
+            // ajax_refresh_occupancy                   
+            var jsonObj = JSON.parse(data);    //获得jsonObj对象
+            var used = jsonObj.dhcpstatus[0].used;
+            var total = jsonObj.dhcpstatus[0].total;
+            $("#scope0_occupancy").html("total:"+total+"; used:"+used); 
+            $("#modeType").text("Mode");
+            $("#vendorMode0").text("Vendor");
+            $("#deviceMode0").text("Device"); 
         },    
-        error : function() {    
+        error:function() {    
+            alert("异常！");    
+        }    
+        });  
+    })
+
+    // detail_scope0
+    detail_scope0.addEventListener('click', function(){
+
+        var aj = $.ajax( {    
+        url:'productManager_reverseUpdate',  
+        type:'get',    
+        cache:true,  
+        dataType:'json',  
+        success:function(data) {   
+            console.log(data); 
+            var jsonObj = JSON.parse(data);       
+            $("#detail0_info").html(jsonObj);
+        },    
+        error : function() {      
             alert("异常！");    
         }    
         });  
     })
 
     // detail_scope1
-    $("#detail1").click(function(){
-        $.get("url",function(data){
-            $("#detail1_info").innerHTML(data)
-        });
-    });
+    detail_scope1.addEventListener('click', function(){
 
- // // ajax_refresh_scope1_occupancy 定时局部刷新
- //    $(function(){
- //        setInterval(refresh_scope1,10);
- //        function refresh_scope1(){
- //            $.get("url",function(data){
+        var aj = $.ajax( {    
+        url:'productManager_reverseUpdate?',  
+        type:'get',    
+        cache:true,  
+        dataType:'json',  
+        success:function(data) {   
+            console.log(data); 
+            var jsonObj = JSON.parse(data);       
+            $("#detail0_info").html(jsonObj);
+        },    
+        error : function() {      
+            alert("异常！");    
+        }    
+        });  
+    })
 
- //                $("#scope1_occupancy").innerHTML(data)
- //        });
- //     }
+
+ // ajax_refresh_scope0_occupancy 定时局部刷新
+    $(function(){
+        // set fresh time
+        setInterval(refresh_scope0,300000);        
+        function refresh_scope0(){     
+          $("#scope0_occupancy").html("new imformation");       
+          $.ajax({    
+                 url: "",    
+                 type: 'POST',   
+                 dataType : 'json',  
+                 data: {},    
+                 success: function (data) {         
+                      console.log(data);
+                      // ajax_refresh_occupancy                   
+                      var jsonObj = JSON.parse(data);    //获得jsonObj对象
+                      var used = jsonObj.dhcpstatus[0].used;
+                      var total = jsonObj.dhcpstatus[0].total;
+                      $("#scope0_occupancy").html("total:"+total+"; used:"+used); 
+                 },    
+                 error : function(jqXHR) {  
+                 alert("发生错误：" + jqXHR.status);  
+                 },  
+           }); 
+        }
+      });
+
 
 });
 
@@ -83,7 +186,7 @@ $(document).ready(function(){
   //                    }
   //                },
   //                error: function(xhr) {
-  //                    // 导致出错的原因较多，以后再研究
+  //                    // 导致出错的原因较多
   //                    alert('error:' + JSON.stringify(xhr));
   //                }
   //            })
@@ -99,3 +202,7 @@ $(document).ready(function(){
   //            });
 
   // 
+
+
+
+
