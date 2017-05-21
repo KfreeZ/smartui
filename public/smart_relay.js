@@ -1,60 +1,93 @@
 $(document).ready(function(){
-    var btn = document.getElementById('applyBtn');
+	
+	reflesh();
+	setInterval(reflesh, 5000);
+	
     var vendor = document.getElementById('vendor');
-    var detail_scope0 = document.getElementById("detail0");
-    var detail_scope1 = document.getElementById("detail1");
     // console.log(detail_scope0);
     console.log(vendor);
     var modeValue;
-    var vendorValue = new Array(3);
-    var deviceValue= new Array(3);
+    var vendorValue = new Array(10);
+    var deviceValue = new Array(10);
+	var listNum = 0;
 
-    $("#mode li").click(function () {
+    $("#mode li").click(function() {
         // console.log('click');
         modeValue = $(this).text();       //获取点击li的值   
-        console.log(modeValue)
+        console.log("Mode changes to: " + modeValue)
         $("#modeType").text(modeValue);
     });
 
-    // scope0 config
-    $("#vendor0 li").click(function () {
-        vendorValue[0] = $(this).text(); 
-        $("#vendorMode0").text(vendorValue[0]);  
-    });
-    $("#device0 li").click(function () {
-        deviceValue[0] = $(this).text();  
-        $("#deviceMode0").text(deviceValue[0]); 
-    });
+	function reflesh() {
+		console.log("reflesh");
+		$.ajaxSettings.async = false;
+		$.getJSON("./output.json", function(data) {
+			var oldListNum = $(".row").length;
+			listNum = data.dhcpstatus.length;
+			
+			if (listNum > oldListNum) {
+				for (i = 0; i < listNum - oldListNum; i++) {
+					$.get("./row.html", function(row) {
+						$("#display").append(row);	
+					});
+				}
+			} else {
+				for (i = 0; i < oldListNum - listNum; i++) {
+					$(".row:last").remove();
+					$(".rowDivider:last").remove();	
+				}
+			}
 
-    // scope1 config
-    $("#vendor1 li").click(function () {
-        vendorValue[1] = $(this).text(); 
-        $("#vendorMode0").text(vendorValue[1]);  
-    });
-    $("#device1 li").click(function () {
-        deviceValue[1] = $(this).text();  
-        $("#deviceMode1").text(deviceValue[1]); 
-    });
+			$(".scope").each(function(index) {
+				$(this).html(data.dhcpstatus[index].scope + "<br>");
+			});
+			$(".progress-bar").each(function(index) {
+				var total = data.dhcpstatus[index].total;
+				var used = data.dhcpstatus[index].used;
+				var percentage = 100 * used/total;
+				$(this).html("total:" + total + "; used:" + used);
+				$(this).attr("style", "width: " + percentage + "%");
+				if (percentage > 90) {
+					$(this).attr("class", "scopebar progress-bar progress-bar-danger");
+				} else {
+					$(this).attr("class", "scopebar progress-bar");
+				}
+			});
+			$(".vendorList").each(function(index) {
+				$(this).find("a").click(function() {
+					vendorValue[index] = $(this).text(); 
+					if (vendorValue[index] == "Cancel") {
+						$(".vendorBtn:eq(" + index + ")").text("Vendor");
+						$(".vendorBtn:eq(" + index + ")").css("color","black");
+					} else {
+						$(".vendorBtn:eq(" + index + ")").text(vendorValue[index]);
+						$(".vendorBtn:eq(" + index + ")").css("color","blue");
+					}
+				});
+			});
+			$(".deviceList").each(function(index) {
+				$(this).find("a").click(function() {
+					deviceValue[index] = $(this).text(); 
+					if (deviceValue[index] == "Cancel") {
+						$(".deviceBtn:eq(" + index + ")").text("Device");
+						$(".deviceBtn:eq(" + index + ")").css("color","black");
+					} else {
+						$(".deviceBtn:eq(" + index + ")").text(deviceValue[index]);
+						$(".deviceBtn:eq(" + index + ")").css("color","blue");
+					}
+				});
+			});
+			
+		});
+		$.ajaxSettings.async = true;
+	};
 
+	
+    $("#applyBtn").click(function() {
+		reflesh();
+	});
 
-    btn.addEventListener('click', function(){
-
-                    // test occupancy refresh after apply attach
-                    var jsonObj = {"dhcpstatus" : 
-                                    [
-                                      {"scope": "1.1.1.1-1.1.1.255", "total": 100, "used": "20"},
-                                      {"scope": "2.1.1.1-1.1.1.255", "total": 50, "used": "30"},
-                                      {"scope": "3.1.1.1-1.1.1.255", "total": 25, "used": "40"}
-                                    ]
-                                  } 
-                    console.log("post dataobject to server"+jsonObj)
-                    var used = jsonObj.dhcpstatus[0].used;
-                    var total = jsonObj.dhcpstatus[0].total;
-                    // console.log(used + "  " + total)
-                    $("#scope0_occupancy").html("total:"+total+"; used:"+used);
-                    // var occup= (used/total)*100;
-                    // $("#scope0_occupancy").style.width = occup+"%";
-
+		/*
         var myData = {  "mode": modeValue,
                         "policies":[
                                       {
@@ -71,6 +104,7 @@ $(document).ready(function(){
 
                                     ]
                       };
+					  *
         console.log("attach apply-btn post data"+myData);
         $("#modeType").text("Mode");
         $("#vendorMode0").text("Vendor");
@@ -100,8 +134,9 @@ $(document).ready(function(){
         error:function() {    
             alert("异常！");    
         }    
-        });  
-    })
+        }); 
+*	
+    });
 
     // detail_scope0
     detail_scope0.addEventListener('click', function(){
@@ -140,8 +175,9 @@ $(document).ready(function(){
         }    
         });  
     })
+*/
 
-
+	/*
  // ajax_refresh_scope0_occupancy 定时局部刷新
     $(function(){
         // set fresh time
@@ -167,9 +203,10 @@ $(document).ready(function(){
            }); 
         }
       });
-
+*/
 
 });
+
 
 
 
