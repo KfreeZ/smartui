@@ -75,8 +75,8 @@ $(document).ready(function(){
 	
 	function reflesh() {
 		$.ajaxSettings.async = false;
-		//$.getJSON("./update", function(data) {
-		$.getJSON("./public/output.json", function(data) {
+		$.getJSON("./update", function(data) {
+		// $.getJSON("./public/output.json", function(data) {
 		console.log(data)
 			var oldListNum = $(".row").length;
 			var listNum = data.DhcpStatus.length;
@@ -97,7 +97,6 @@ $(document).ready(function(){
 					$(".rowDivider:last").remove();	
 				}
 			}
-			console.log("~~~");
 			console.log(localCfg);
 			console.log(data);
 			$(".scope").each(function(index) {
@@ -143,8 +142,16 @@ $(document).ready(function(){
 	};
 
 
+	// $("#applyBtn").click(function() {
+	// 	$.post("./apply",localCfg,reflesh());
+
+	// });
+
 	$("#applyBtn").click(function() {
-		$.post("URL",localCfg,reflesh());
+		var myData= JSON.stringify(localCfg);
+		console.log("apply btn:");
+		console.log(myData);
+		$.post("./apply",myData,reflesh());
 	});
 
 
