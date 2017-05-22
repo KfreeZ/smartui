@@ -1,16 +1,12 @@
 $(document).ready(function(){
 	
-
-    var vendor = document.getElementById('vendor');
-    // console.log(detail_scope0);
-    console.log(vendor);
     var modeValue;
-	var cfgArray = new Array();
+	//var cfgArray = new Array();
+	var localCfg = new Array();
 	var listNum = 0;
 
 	reflesh();
-	setInterval(reflesh, 5000);
-	
+	setInterval(reflesh, 5000);	
 
     $("#mode li").click(function() {
         // console.log('click');
@@ -19,6 +15,21 @@ $(document).ready(function(){
         $("#modeType").text(modeValue);
     });
 
+	function maskToPrefix(mask) {
+		var prefix = 0;
+		maskArr = mask.split(".");
+		for (i = 0; i < 4; i++) {
+			tmp = parseInt(maskArr[i]).toString(2);
+			prefix += tmp.split("1").length - 1;
+		}	
+		return prefix;
+	}
+	
+	function scopeDisplay(str) {
+		scopeArr = str.split(" ");
+		return scopeArr[0] + "/" + maskToPrefix(scopeArr[1]);
+	}
+	
 	function textTransfer(str) {
 		if (str == "Cancel" || str == "Vendor" || str == "Device") {
 			return "NULL";
@@ -26,52 +37,52 @@ $(document).ready(function(){
 		return str;
 	}
 	
-	function setVendorBtn(index) {
-		$(".vendorList:eq(" + index + ")").find("a").click(function() {
-			cfgArray[index].vendor = textTransfer($(this).text());
-		    if (cfgArray[index].vendor == "NULL") {
-		    	$(".vendorBtn:eq(" + index + ")").text("Vendor");
-		    	$(".vendorBtn:eq(" + index + ")").css("color","black");
-		    } else {
-		    	$(".vendorBtn:eq(" + index + ")").text(cfgArray[index].vendor);
-		    	$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
-		    }
+	function setVendorText(str, vendorID) {
+		str = textTransfer(str);
+		if (str == "NULL") {
+		    $(".vendorBtn:eq(" + vendorID + ")").text("Vendor");
+		    $(".vendorBtn:eq(" + vendorID + ")").css("color","black");
+		} else {
+		    $(".vendorBtn:eq(" + vendorID + ")").text(str);
+		    $(".vendorBtn:eq(" + vendorID + ")").css("color","#3473B2");
+		}
+	}
+	function setDeviceText(str, deviceID) {
+		str = textTransfer(str);
+		if (str == "NULL") {
+		    $(".deviceBtn:eq(" + deviceID + ")").text("Device");
+		    $(".deviceBtn:eq(" + deviceID + ")").css("color","black");
+		} else {
+		    $(".deviceBtn:eq(" + deviceID + ")").text(str);
+		    $(".deviceBtn:eq(" + deviceID + ")").css("color","#3473B2");
+		}
+	}
+	
+	function setVendorBtn(vendorID) {
+		$(".vendorList:eq(" + vendorID + ")").find("a").click(function() {
+			localCfg[vendorID].Vendor = $(this).text();
+			setVendorText(localCfg[vendorID].Vendor, vendorID);
 		});
 	}
-	function setDeviceBtn(index) {
-		$(".deviceList:eq(" + index + ")").find("a").click(function() {
-		    cfgArray[index].device = textTransfer($(this).text()); 
-		    if (cfgArray[index].device[index] == "NULL") {
-		    	$(".deviceBtn:eq(" + index + ")").text("Device");
-		    	$(".deviceBtn:eq(" + index + ")").css("color","black");
-		    } else {
-		    	$(".deviceBtn:eq(" + index + ")").text(cfgArray[index].device);
-		    	$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
-		    }
+	function setDeviceBtn(deviceID) {
+		$(".deviceList:eq(" + deviceID + ")").find("a").click(function() {
+		    localCfg[deviceID].DeviceClass = $(this).text();
+			setDeviceText(localCfg[deviceID].DeviceClass, deviceID);			
 		});	
 	}
 	
 	
 	function reflesh() {
-<<<<<<< HEAD
-=======
-		console.log("Mode changes to: " + modeValue)
-		console.log("reflesh");
->>>>>>> origin/master
 		$.ajaxSettings.async = false;
-		$.getJSON("./update", function(data) {
-      console.log(data)
+		//$.getJSON("./update", function(data) {
+		$.getJSON("./public/output.json", function(data) {
+		console.log(data)
 			var oldListNum = $(".row").length;
 			listNum = data.DhcpStatus.length;
 			
 			if (listNum > oldListNum) {
-<<<<<<< HEAD
 				for (i = 0; i < listNum - oldListNum; i++) {
 					$.get("public/row.html", function(row) {
-=======
-				for (i = oldListNum; i < listNum; i++) {
-					$.get("./row.html", function(row) {
->>>>>>> origin/master
 						$("#display").append(row);	
 					});
 					
@@ -84,63 +95,38 @@ $(document).ready(function(){
 					$(".rowDivider:last").remove();	
 				}
 			}
-
+			console.log("~~~");
+			console.log(localCfg);
+			console.log(data);
 			$(".scope").each(function(index) {
-<<<<<<< HEAD
-				$(this).html(data.DhcpStatus[index].Scope + "<br>");
-=======
-				var scope = data.dhcpstatus[index].scope;
-				$(this).html(scope + "<br>");
+				var scope = data.DhcpStatus[index].Scope;
+				$(this).html(scopeDisplay(scope) + "<br>");
 				
 				
-				for (i = 0; i < cfgArray.length; i++) {
-					console.log(i);
-					console.log(scope);
-					console.log(cfgArray[i].scope);
-					if (scope == cfgArray[i].scope) {
-						if (cfgArray[i].vendor == "NULL") {
-							$(".vendorBtn:eq(" + index + ")").text("Vendor");
-							$(".vendorBtn:eq(" + index + ")").css("color","black");
-						} else {
-							$(".vendorBtn:eq(" + index + ")").text(cfgArray[i].vendor);
-							$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
-						}
-						if (cfgArray[i].device == "NULL") {
-							$(".deviceBtn:eq(" + index + ")").text("Device");
-							$(".deviceBtn:eq(" + index + ")").css("color","black");
-						} else {
-							$(".deviceBtn:eq(" + index + ")").text(cfgArray[i].device);
-							$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
-						}
+				for (i = 0; i < localCfg.length; i++) {
+					if (scope == localCfg[i].Scope) {
+						setVendorText(localCfg[i].Vendor, index);
+						setDeviceText(localCfg[i].DeviceClass, index);
 						break;
 					}
 				}
-				if (i == cfgArray.length) {
-					$(".vendorBtn:eq(" + index + ")").text("Vendor");
-					$(".vendorBtn:eq(" + index + ")").css("color","black");
-					
-					$(".deviceBtn:eq(" + index + ")").text("Device");
-					$(".deviceBtn:eq(" + index + ")").css("color","black");
+				if (i == localCfg.length) {
+					setVendorText("NULL", index);
+					setDeviceText("NULL", index);
 				}
->>>>>>> origin/master
 			});
 			
-			cfgArray.splice(0, cfgArray.length);
-			for (i = 0; i < listNum; i++) {
-				var cfgValue = 
-				{
-					"scope": data.dhcpstatus[i].scope,
-					"vendor": textTransfer($(".vendorBtn:eq(" + i + ")").text()),
-					"device": textTransfer($(".deviceBtn:eq(" + i + ")").text()),		
-				}
-				cfgArray.push(cfgValue);
+			localCfg = data.DhcpStatus;
+			for (i = 0; i < localCfg.length; i++) {
+				localCfg[i].DeviceClass = textTransfer($(".deviceBtn:eq(" + i + ")").text());
+				localCfg[i].Vendor = textTransfer($(".vendorBtn:eq(" + i + ")").text());	
 			}
 			
 			$(".progress-bar").each(function(index) {
 				var total = data.DhcpStatus[index].Total;
 				var used = data.DhcpStatus[index].Used;
 				var percentage = 100 * used/total;
-				percentage = percentage.toFixed(2);
+				percentage = Math.round(percentage * 100)/100;
 				$(this).html(percentage + "%");
 				$(this).attr("style", "width: " + percentage + "%");
 				if (percentage > 90) {
@@ -162,7 +148,7 @@ $(document).ready(function(){
     $("#applyBtn").click(function() {
        reflesh();
 	});
-
+});
 		/*
         var myData = {  "mode": modeValue,
                         "policies":[
@@ -200,8 +186,8 @@ $(document).ready(function(){
             console.log(data);
             // ajax_refresh_occupancy                   
             var jsonObj = JSON.parse(data);    //获得jsonObj对象
-            var used = jsonObj.dhcpstatus[0].used;
-            var total = jsonObj.dhcpstatus[0].total;
+            var used = jsonObj.DhcpStatus[0].used;
+            var total = jsonObj.DhcpStatus[0].total;
             $("#apply").html("total:"+total+"; used:"+used); 
             $("#modeType").text("Mode");
             $("#vendorMode0").text("Vendor");
@@ -269,8 +255,8 @@ $(document).ready(function(){
                       console.log(data);
                       // ajax_refresh_occupancy                   
                       var jsonObj = JSON.parse(data);    //获得jsonObj对象
-                      var used = jsonObj.dhcpstatus[0].used;
-                      var total = jsonObj.dhcpstatus[0].total;
+                      var used = jsonObj.DhcpStatus[0].used;
+                      var total = jsonObj.DhcpStatus[0].total;
                       $("#scope0_occupancy").html("total:"+total+"; used:"+used); 
                  },    
                  error : function(jqXHR) {  
@@ -279,9 +265,10 @@ $(document).ready(function(){
            }); 
         }
       });
-*/
+
 
 });
+*/
 
 
 
