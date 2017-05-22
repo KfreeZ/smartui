@@ -115,6 +115,15 @@ $(document).ready(function(){
 					setVendorText("NULL", index);
 					setDeviceText("NULL", index);
 				}
+				
+				$(".detail:eq(" + index + ")").click(function() {
+					$("#detail_info").empty();
+					$("#detail_info").text(data.DhcpStatus[index].Scope);
+				});
+					
+					
+				
+				
 			});
 			
 			localCfg.DhcpStatus = data.DhcpStatus;
