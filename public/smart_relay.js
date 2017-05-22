@@ -19,15 +19,15 @@ $(document).ready(function(){
     });
 
 	function reflesh() {
-		console.log("reflesh");
 		$.ajaxSettings.async = false;
-		$.getJSON("./output.json", function(data) {
+		$.getJSON("./update", function(data) {
+      console.log(data)
 			var oldListNum = $(".row").length;
-			listNum = data.dhcpstatus.length;
+			listNum = data.DhcpStatus.length;
 			
 			if (listNum > oldListNum) {
 				for (i = 0; i < listNum - oldListNum; i++) {
-					$.get("./row.html", function(row) {
+					$.get("public/row.html", function(row) {
 						$("#display").append(row);	
 					});
 				}
@@ -39,11 +39,11 @@ $(document).ready(function(){
 			}
 
 			$(".scope").each(function(index) {
-				$(this).html(data.dhcpstatus[index].scope + "<br>");
+				$(this).html(data.DhcpStatus[index].Scope + "<br>");
 			});
 			$(".progress-bar").each(function(index) {
-				var total = data.dhcpstatus[index].total;
-				var used = data.dhcpstatus[index].used;
+				var total = data.DhcpStatus[index].Total;
+				var used = data.DhcpStatus[index].Used;
 				var percentage = 100 * used/total;
 				$(this).html("total:" + total + "; used:" + used);
 				$(this).attr("style", "width: " + percentage + "%");
