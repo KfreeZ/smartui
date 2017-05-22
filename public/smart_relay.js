@@ -26,28 +26,36 @@ $(document).ready(function(){
 		return str;
 	}
 	
+	function setVendorText(str, vendorID) {
+		if (str == "NULL") {
+		    $(".vendorBtn:eq(" + vendorID + ")").text("Vendor");
+		    $(".vendorBtn:eq(" + vendorID + ")").css("color","black");
+		} else {
+		    $(".vendorBtn:eq(" + vendorID + ")").text(str);
+		    $(".vendorBtn:eq(" + vendorID + ")").css("color","#3473B2");
+		}
+	}
+	
+	function setDeviceText(str, deviceID) {
+		if (str == "NULL") {
+		    $(".deviceBtn:eq(" + deviceID + ")").text("Device");
+		    $(".deviceBtn:eq(" + deviceID + ")").css("color","black");
+		} else {
+		    $(".deviceBtn:eq(" + deviceID + ")").text(str);
+		    $(".deviceBtn:eq(" + deviceID + ")").css("color","#3473B2");
+		}
+	}
+	
 	function setVendorBtn(index) {
 		$(".vendorList:eq(" + index + ")").find("a").click(function() {
 			cfgArray[index].vendor = textTransfer($(this).text());
-		    if (cfgArray[index].vendor == "NULL") {
-		    	$(".vendorBtn:eq(" + index + ")").text("Vendor");
-		    	$(".vendorBtn:eq(" + index + ")").css("color","black");
-		    } else {
-		    	$(".vendorBtn:eq(" + index + ")").text(cfgArray[index].vendor);
-		    	$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
-		    }
+			setVendorText(cfgArray[index].vendor, index);
 		});
 	}
 	function setDeviceBtn(index) {
 		$(".deviceList:eq(" + index + ")").find("a").click(function() {
-		    cfgArray[index].device = textTransfer($(this).text()); 
-		    if (cfgArray[index].device[index] == "NULL") {
-		    	$(".deviceBtn:eq(" + index + ")").text("Device");
-		    	$(".deviceBtn:eq(" + index + ")").css("color","black");
-		    } else {
-		    	$(".deviceBtn:eq(" + index + ")").text(cfgArray[index].device);
-		    	$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
-		    }
+		    cfgArray[index].device = textTransfer($(this).text());
+			setDeviceText(cfgArray[index].device, index);			
 		});	
 	}
 	
@@ -82,33 +90,15 @@ $(document).ready(function(){
 				
 				
 				for (i = 0; i < cfgArray.length; i++) {
-					console.log(i);
-					console.log(scope);
-					console.log(cfgArray[i].scope);
 					if (scope == cfgArray[i].scope) {
-						if (cfgArray[i].vendor == "NULL") {
-							$(".vendorBtn:eq(" + index + ")").text("Vendor");
-							$(".vendorBtn:eq(" + index + ")").css("color","black");
-						} else {
-							$(".vendorBtn:eq(" + index + ")").text(cfgArray[i].vendor);
-							$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
-						}
-						if (cfgArray[i].device == "NULL") {
-							$(".deviceBtn:eq(" + index + ")").text("Device");
-							$(".deviceBtn:eq(" + index + ")").css("color","black");
-						} else {
-							$(".deviceBtn:eq(" + index + ")").text(cfgArray[i].device);
-							$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
-						}
+						setVendorText(cfgArray[i].vendor, index);
+						setDeviceText(cfgArray[i].device, index);
 						break;
 					}
 				}
 				if (i == cfgArray.length) {
-					$(".vendorBtn:eq(" + index + ")").text("Vendor");
-					$(".vendorBtn:eq(" + index + ")").css("color","black");
-					
-					$(".deviceBtn:eq(" + index + ")").text("Device");
-					$(".deviceBtn:eq(" + index + ")").css("color","black");
+					setVendorText("NULL", index);
+					setDeviceText("NULL", index);
 				}
 			});
 			
