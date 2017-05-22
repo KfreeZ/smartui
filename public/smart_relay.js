@@ -61,25 +61,16 @@ $(document).ready(function(){
 	
 	
 	function reflesh() {
-<<<<<<< HEAD
-=======
-		console.log("Mode changes to: " + modeValue)
-		console.log("reflesh");
->>>>>>> origin/master
 		$.ajaxSettings.async = false;
-		$.getJSON("./update", function(data) {
-      console.log(data)
+		//$.getJSON("./update", function(data) {
+		$.getJSON("./public/output.json", function(data) {
+		console.log(data)
 			var oldListNum = $(".row").length;
 			listNum = data.DhcpStatus.length;
 			
 			if (listNum > oldListNum) {
-<<<<<<< HEAD
 				for (i = 0; i < listNum - oldListNum; i++) {
 					$.get("public/row.html", function(row) {
-=======
-				for (i = oldListNum; i < listNum; i++) {
-					$.get("./row.html", function(row) {
->>>>>>> origin/master
 						$("#display").append(row);	
 					});
 					
@@ -94,10 +85,7 @@ $(document).ready(function(){
 			}
 
 			$(".scope").each(function(index) {
-<<<<<<< HEAD
-				$(this).html(data.DhcpStatus[index].Scope + "<br>");
-=======
-				var scope = data.dhcpstatus[index].scope;
+				var scope = data.DhcpStatus[index].scope;
 				$(this).html(scope + "<br>");
 				
 				
@@ -112,14 +100,13 @@ $(document).ready(function(){
 					setVendorText("NULL", index);
 					setDeviceText("NULL", index);
 				}
->>>>>>> origin/master
 			});
 			
 			cfgArray.splice(0, cfgArray.length);
 			for (i = 0; i < listNum; i++) {
 				var cfgValue = 
 				{
-					"scope": data.dhcpstatus[i].scope,
+					"scope": data.DhcpStatus[i].scope,
 					"vendor": textTransfer($(".vendorBtn:eq(" + i + ")").text()),
 					"device": textTransfer($(".deviceBtn:eq(" + i + ")").text()),		
 				}
@@ -190,8 +177,8 @@ $(document).ready(function(){
             console.log(data);
             // ajax_refresh_occupancy                   
             var jsonObj = JSON.parse(data);    //获得jsonObj对象
-            var used = jsonObj.dhcpstatus[0].used;
-            var total = jsonObj.dhcpstatus[0].total;
+            var used = jsonObj.DhcpStatus[0].used;
+            var total = jsonObj.DhcpStatus[0].total;
             $("#apply").html("total:"+total+"; used:"+used); 
             $("#modeType").text("Mode");
             $("#vendorMode0").text("Vendor");
@@ -259,8 +246,8 @@ $(document).ready(function(){
                       console.log(data);
                       // ajax_refresh_occupancy                   
                       var jsonObj = JSON.parse(data);    //获得jsonObj对象
-                      var used = jsonObj.dhcpstatus[0].used;
-                      var total = jsonObj.dhcpstatus[0].total;
+                      var used = jsonObj.DhcpStatus[0].used;
+                      var total = jsonObj.DhcpStatus[0].total;
                       $("#scope0_occupancy").html("total:"+total+"; used:"+used); 
                  },    
                  error : function(jqXHR) {  
