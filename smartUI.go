@@ -180,7 +180,7 @@ func updateHandler(w http.ResponseWriter, r *http.Request, title string) {
 	        log.Fatal(err)
 	    }
 	    fmt.Printf("%s %s %s %d %d\n", name, dc, vdr, total, used)
-	    scp := CnrStatus{name, total, used, dc, vdr}
+	    scp := CnrStatus{name, total, total-ava, dc, vdr}
 	    resSlice.DhcpStatus = append(resSlice.DhcpStatus, scp)
 	}
 	if err := rows.Err(); err != nil {
