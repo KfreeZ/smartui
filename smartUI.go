@@ -7,7 +7,7 @@ package main
 import (
 	"html/template"
 	"fmt"
-	// "encoding/json"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -21,14 +21,6 @@ type Page struct {
 	Body  []byte
 }
 
-type ScopeItem struct{
-	DeviceClass string
-	Vendor string
-	Total int
-	Leased int
-	Avaliable int
-}
-
 
 type CnrStatusSlice struct {
 	DhcpStatus []CnrStatus
@@ -38,24 +30,10 @@ type CnrStatus struct {
 	Scope string
 	Total int
 	Used int
+	DeviceClass string
+	Vendor string
 }
 
-type SmartUiDb struct {
-	GlobalCfg string
-	Scps []ScopeItem
-}
-
-// func insertScopeDB(ScopeItem) error {
-
-// }
-
-// func updateScopeSta(scope String, total int, used int) error {
-
-// }
-
-// func updateScopeSta(scope String, dvcClass int, vendorName int) error {
-
-// }
 
 func (p *Page) save() error {
 	filename := p.Title + ".txt"
@@ -109,11 +87,6 @@ func smartUiHandler(w http.ResponseWriter, r *http.Request, title string) {
 
 func applyHandler(w http.ResponseWriter, r *http.Request, title string) {
 	log.Println("come to " + title+".html")
-
-	// var cfg Cfg
-	// json.NewDecoder(r.Body).Decode(&cfg)
-	// log.Println(cfg)
-
     result, _:= ioutil.ReadAll(r.Body)  
     r.Body.Close()  
     fmt.Printf("%s\n", result)
@@ -123,36 +96,54 @@ func applyHandler(w http.ResponseWriter, r *http.Request, title string) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	} else {
-	    response, err := getJsonResponse();
-    	
-	    // scope1 := ScopeStatus{"1.1.1.1", Status{23, 33, 24}}
-	    // js, err := json.Marshal(scope1)
-	    if err != nil {
-	        panic(err)
-	    }
-	    w.Header().Set("Content-Type", "application/json")
-	    w.WriteHeader(http.StatusOK)
-	    // fmt.Fprintf(w, string(response))
-	    // json.NewEncoder(w).Encode(response)
-	    // io.WriteString(w, string(response))
-	    w.Write(response)
+
 	}
 
 }
 
 func updateHandler(w http.ResponseWriter, r *http.Request, title string) {
 	log.Println("come to " + title+".html")
-    response, err := getJsonResponse();
 
-    if err != nil {
-        panic(err)
-    }
+	db, err := sql.Open("mysql", "root:cisco123!@/testdb")
+
+	if err != nil {
+	panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
+	}
+	defer db.Close()
+
+	// Open doesn't open a connection. Validate DSN data:
+	err = db.Ping()
+	if err != nil {
+	panic(err.Error()) // proper error handling instead of panic in your app
+	}
+
+	rows, err := db.Query("select * from DhcpScopes")
+	if err != nil {
+	    log.Fatal(err)
+	}
+
+	var resSlice  CnrStatusSlice
+	for rows.Next() {
+	    var name, dc, vdr string
+	    var total, used, ava int
+	    if err := rows.Scan(&name, &total, &used, &ava, &dc, &vdr); err != nil {
+	        log.Fatal(err)
+	    }
+	    fmt.Printf("%s %s %s %d %d\n", name, dc, vdr, total, used)
+	    scp := CnrStatus{name, total, used, dc, vdr}
+	    resSlice.DhcpStatus = append(resSlice.DhcpStatus, scp)
+	}
+	if err := rows.Err(); err != nil {
+	    log.Fatal(err)
+	}
+	js_Scp, err := json.Marshal(resSlice)
+	// log.Println(js_Scp)
     w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
     // fmt.Fprintf(w, string(response))
     // json.NewEncoder(w).Encode(response)
     // io.WriteString(w, string(response))
-    w.Write(response)
+    w.Write(js_Scp)
 
 }
 
@@ -180,69 +171,15 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 	}
 }
 
-func getJsonResponse()([]byte, error) {
-	filename := "status.json"
-	body, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-	fmt.Printf("%s\n", body)
-
-	// fmt.Println(s)
-
-
-    return body, err
-    // fruits := make(map[string]int)
-    // fruits["Apples"] = 25
-    // fruits["Oranges"] = 10
-
-    // vegetables := make(map[string]int)
-    // vegetables["Carrats"] = 10
-    // vegetables["Beets"] = 0
-
-    // dhcpStatus := make(map[string]Status)
-    // dhcpStatus[""]
-    // d := Data{fruits, vegetables}
-    // p := Payload{d}
-
-    // return json.MarshalIndent(p, "", "  ")
-}
-
 
 func main() {
 	// http.HandleFunc("/view/", makeHandler(viewHandler))
 	// http.HandleFunc("/edit/", makeHandler(editHandler))
 	// http.HandleFunc("/save/", makeHandler(saveHandler))
 
-	// filename := "cfg.json"
-	// body, err := ioutil.ReadFile(filename)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// fmt.Printf("%s\n", body)
-
-	// var cnr SmartUiDb
-	// json.Unmarshal([]byte(body), &cnr)
-	// fmt.Println(s)
-	// scopeDB ：= make（map[string]ScopeItem)
-
-	// db, err := sql.Open("mysql", "admin:cisco123!@/SmartUiDb")
-	// db, err := sql.Open("mysql", "root:O_dqbYazK0ZM!@/SmartUiDb")
-	if err != nil {
-	panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
-	}
-	defer db.Close()
-
-	// Open doesn't open a connection. Validate DSN data:
-	err = db.Ping()
-	if err != nil {
-	panic(err.Error()) // proper error handling instead of panic in your app
-	}
-
 	http.HandleFunc("/smartui/index", makeHandler(smartUiHandler))
 	http.HandleFunc("/smartui/apply", makeHandler(applyHandler))
 	http.HandleFunc("/smartui/update", makeHandler(updateHandler))
-
 	http.Handle("/smartui/public/", http.StripPrefix("/smartui/public/", http.FileServer(http.Dir("public"))))
 	
 	http.ListenAndServe(":8090", nil)
