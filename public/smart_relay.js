@@ -45,7 +45,8 @@ $(document).ready(function(){
 				var total = data.dhcpstatus[index].total;
 				var used = data.dhcpstatus[index].used;
 				var percentage = 100 * used/total;
-				$(this).html("total:" + total + "; used:" + used);
+				percentage = percentage.toFixed(2);
+				$(this).html(percentage + "%");
 				$(this).attr("style", "width: " + percentage + "%");
 				if (percentage > 90) {
 					$(this).attr("class", "scopebar progress-bar progress-bar-danger");
@@ -61,7 +62,7 @@ $(document).ready(function(){
 						$(".vendorBtn:eq(" + index + ")").css("color","black");
 					} else {
 						$(".vendorBtn:eq(" + index + ")").text(vendorValue[index]);
-						$(".vendorBtn:eq(" + index + ")").css("color","blue");
+						$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
 					}
 				});
 			});
@@ -73,7 +74,7 @@ $(document).ready(function(){
 						$(".deviceBtn:eq(" + index + ")").css("color","black");
 					} else {
 						$(".deviceBtn:eq(" + index + ")").text(deviceValue[index]);
-						$(".deviceBtn:eq(" + index + ")").css("color","blue");
+						$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
 					}
 				});
 			});
