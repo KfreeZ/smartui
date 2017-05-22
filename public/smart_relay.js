@@ -18,7 +18,34 @@ $(document).ready(function(){
         $("#modeType").text(modeValue);
     });
 
+	function setVendorBtn(index) {
+		$(".vendorList:eq(" + index + ")").find("a").click(function() {
+		   	vendorValue[index] = $(this).text();
+		    if (vendorValue[index] == "Cancel") {
+		    	$(".vendorBtn:eq(" + index + ")").text("Vendor");
+		    	$(".vendorBtn:eq(" + index + ")").css("color","black");
+		    } else {
+		    	$(".vendorBtn:eq(" + index + ")").text(vendorValue[index]);
+		    	$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
+		    }
+		});
+	}
+	function setDeviceBtn(index) {
+		$(".deviceList:eq(" + index + ")").find("a").click(function() {
+		    deviceValue[index] = $(this).text(); 
+		    if (deviceValue[index] == "Cancel") {
+		    	$(".deviceBtn:eq(" + index + ")").text("Device");
+		    	$(".deviceBtn:eq(" + index + ")").css("color","black");
+		    } else {
+		    	$(".deviceBtn:eq(" + index + ")").text(deviceValue[index]);
+		    	$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
+		    }
+		});	
+	}
+	
+	
 	function reflesh() {
+		console.log("Mode changes to: " + modeValue)
 		console.log("reflesh");
 		$.ajaxSettings.async = false;
 		$.getJSON("./output.json", function(data) {
@@ -26,10 +53,13 @@ $(document).ready(function(){
 			listNum = data.dhcpstatus.length;
 			
 			if (listNum > oldListNum) {
-				for (i = 0; i < listNum - oldListNum; i++) {
+				for (i = oldListNum; i < listNum; i++) {
 					$.get("./row.html", function(row) {
 						$("#display").append(row);	
 					});
+					
+					setVendorBtn(i);
+					setDeviceBtn(i);
 				}
 			} else {
 				for (i = 0; i < oldListNum - listNum; i++) {
@@ -54,31 +84,6 @@ $(document).ready(function(){
 					$(this).attr("class", "scopebar progress-bar");
 				}
 			});
-			$(".vendorList").each(function(index) {
-				$(this).find("a").click(function() {
-					vendorValue[index] = $(this).text(); 
-					if (vendorValue[index] == "Cancel") {
-						$(".vendorBtn:eq(" + index + ")").text("Vendor");
-						$(".vendorBtn:eq(" + index + ")").css("color","black");
-					} else {
-						$(".vendorBtn:eq(" + index + ")").text(vendorValue[index]);
-						$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
-					}
-				});
-			});
-			$(".deviceList").each(function(index) {
-				$(this).find("a").click(function() {
-					deviceValue[index] = $(this).text(); 
-					if (deviceValue[index] == "Cancel") {
-						$(".deviceBtn:eq(" + index + ")").text("Device");
-						$(".deviceBtn:eq(" + index + ")").css("color","black");
-					} else {
-						$(".deviceBtn:eq(" + index + ")").text(deviceValue[index]);
-						$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
-					}
-				});
-			});
-			
 		});
 		$.ajaxSettings.async = true;
 	};
