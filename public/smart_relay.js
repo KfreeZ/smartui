@@ -1,16 +1,11 @@
 $(document).ready(function(){
 	
-
-    var vendor = document.getElementById('vendor');
-    // console.log(detail_scope0);
-    console.log(vendor);
     var modeValue;
 	var cfgArray = new Array();
 	var listNum = 0;
 
 	reflesh();
-	setInterval(reflesh, 5000);
-	
+	setInterval(reflesh, 5000);	
 
     $("#mode li").click(function() {
         // console.log('click');
@@ -19,6 +14,16 @@ $(document).ready(function(){
         $("#modeType").text(modeValue);
     });
 
+	function maskToPrefix(mask) {
+		var prefix = 0;
+		maskArr = mask.split(".");
+		for (i = 0; i < 4; i++) {
+			tmp = parseInt(maskArr[i]).toString(2);
+			prefix += tmp.split("1").length - 1;
+		}	
+		return prefix;
+	} 
+	
 	function textTransfer(str) {
 		if (str == "Cancel" || str == "Vendor" || str == "Device") {
 			return "NULL";
@@ -35,7 +40,6 @@ $(document).ready(function(){
 		    $(".vendorBtn:eq(" + vendorID + ")").css("color","#3473B2");
 		}
 	}
-	
 	function setDeviceText(str, deviceID) {
 		if (str == "NULL") {
 		    $(".deviceBtn:eq(" + deviceID + ")").text("Device");
@@ -46,16 +50,16 @@ $(document).ready(function(){
 		}
 	}
 	
-	function setVendorBtn(index) {
-		$(".vendorList:eq(" + index + ")").find("a").click(function() {
-			cfgArray[index].vendor = textTransfer($(this).text());
-			setVendorText(cfgArray[index].vendor, index);
+	function setVendorBtn(vendorID) {
+		$(".vendorList:eq(" + vendorID + ")").find("a").click(function() {
+			cfgArray[vendorID].vendor = textTransfer($(this).text());
+			setVendorText(cfgArray[vendorID].vendor, vendorID);
 		});
 	}
-	function setDeviceBtn(index) {
-		$(".deviceList:eq(" + index + ")").find("a").click(function() {
-		    cfgArray[index].device = textTransfer($(this).text());
-			setDeviceText(cfgArray[index].device, index);			
+	function setDeviceBtn(deviceID) {
+		$(".deviceList:eq(" + deviceID + ")").find("a").click(function() {
+		    cfgArray[deviceID].device = textTransfer($(this).text());
+			setDeviceText(cfgArray[deviceID].device, deviceID);			
 		});	
 	}
 	
@@ -117,7 +121,7 @@ $(document).ready(function(){
 				var total = data.DhcpStatus[index].Total;
 				var used = data.DhcpStatus[index].Used;
 				var percentage = 100 * used/total;
-				percentage = percentage.toFixed(2);
+				percentage = Math.round(percentage * 100)/100;
 				$(this).html(percentage + "%");
 				$(this).attr("style", "width: " + percentage + "%");
 				if (percentage > 90) {
@@ -139,7 +143,7 @@ $(document).ready(function(){
     $("#applyBtn").click(function() {
        reflesh();
 	});
-
+});
 		/*
         var myData = {  "mode": modeValue,
                         "policies":[
@@ -256,9 +260,10 @@ $(document).ready(function(){
            }); 
         }
       });
-*/
+
 
 });
+*/
 
 
 
