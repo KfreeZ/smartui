@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	
     var modeValue;
-	var cfgArray = new Array();
+	//var cfgArray = new Array();
+	var localCfg = new Array();
 	var listNum = 0;
 
 	reflesh();
@@ -22,7 +23,12 @@ $(document).ready(function(){
 			prefix += tmp.split("1").length - 1;
 		}	
 		return prefix;
-	} 
+	}
+	
+	function scopeDisplay(str) {
+		scopeArr = str.split(" ");
+		return scopeArr[0] + "/" + maskToPrefix(scopeArr[1]);
+	}
 	
 	function textTransfer(str) {
 		if (str == "Cancel" || str == "Vendor" || str == "Device") {
@@ -32,6 +38,7 @@ $(document).ready(function(){
 	}
 	
 	function setVendorText(str, vendorID) {
+		str = textTransfer(str);
 		if (str == "NULL") {
 		    $(".vendorBtn:eq(" + vendorID + ")").text("Vendor");
 		    $(".vendorBtn:eq(" + vendorID + ")").css("color","black");
@@ -41,6 +48,7 @@ $(document).ready(function(){
 		}
 	}
 	function setDeviceText(str, deviceID) {
+		str = textTransfer(str);
 		if (str == "NULL") {
 		    $(".deviceBtn:eq(" + deviceID + ")").text("Device");
 		    $(".deviceBtn:eq(" + deviceID + ")").css("color","black");
@@ -52,14 +60,14 @@ $(document).ready(function(){
 	
 	function setVendorBtn(vendorID) {
 		$(".vendorList:eq(" + vendorID + ")").find("a").click(function() {
-			cfgArray[vendorID].vendor = textTransfer($(this).text());
-			setVendorText(cfgArray[vendorID].vendor, vendorID);
+			localCfg[vendorID].Vendor = $(this).text();
+			setVendorText(localCfg[vendorID].Vendor, vendorID);
 		});
 	}
 	function setDeviceBtn(deviceID) {
 		$(".deviceList:eq(" + deviceID + ")").find("a").click(function() {
-		    cfgArray[deviceID].device = textTransfer($(this).text());
-			setDeviceText(cfgArray[deviceID].device, deviceID);			
+		    localCfg[deviceID].DeviceClass = $(this).text();
+			setDeviceText(localCfg[deviceID].DeviceClass, deviceID);			
 		});	
 	}
 	
@@ -87,34 +95,31 @@ $(document).ready(function(){
 					$(".rowDivider:last").remove();	
 				}
 			}
-
+			console.log("~~~");
+			console.log(localCfg);
+			console.log(data);
 			$(".scope").each(function(index) {
-				var scope = data.DhcpStatus[index].scope;
-				$(this).html(scope + "<br>");
+				var scope = data.DhcpStatus[index].Scope;
+				$(this).html(scopeDisplay(scope) + "<br>");
 				
 				
-				for (i = 0; i < cfgArray.length; i++) {
-					if (scope == cfgArray[i].scope) {
-						setVendorText(cfgArray[i].vendor, index);
-						setDeviceText(cfgArray[i].device, index);
+				for (i = 0; i < localCfg.length; i++) {
+					if (scope == localCfg[i].Scope) {
+						setVendorText(localCfg[i].Vendor, index);
+						setDeviceText(localCfg[i].DeviceClass, index);
 						break;
 					}
 				}
-				if (i == cfgArray.length) {
+				if (i == localCfg.length) {
 					setVendorText("NULL", index);
 					setDeviceText("NULL", index);
 				}
 			});
 			
-			cfgArray.splice(0, cfgArray.length);
-			for (i = 0; i < listNum; i++) {
-				var cfgValue = 
-				{
-					"scope": data.DhcpStatus[i].scope,
-					"vendor": textTransfer($(".vendorBtn:eq(" + i + ")").text()),
-					"device": textTransfer($(".deviceBtn:eq(" + i + ")").text()),		
-				}
-				cfgArray.push(cfgValue);
+			localCfg = data.DhcpStatus;
+			for (i = 0; i < localCfg.length; i++) {
+				localCfg[i].DeviceClass = textTransfer($(".deviceBtn:eq(" + i + ")").text());
+				localCfg[i].Vendor = textTransfer($(".vendorBtn:eq(" + i + ")").text());	
 			}
 			
 			$(".progress-bar").each(function(index) {

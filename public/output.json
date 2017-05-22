@@ -1,10 +1,10 @@
 {"DhcpStatus" : 
     [
-
-        {"scope": "1.1.1.1 - 1.1.1.255", "Total": 100, "Used": "5"},
-        {"scope": "2.1.1.1 - 1.1.1.255", "Total": 50, "Used": "25"},
-        {"scope": "3.1.1.1 - 1.1.1.255", "Total": 200, "Used": "40"},
-		{"scope": "255.255.255.255 - 255.255.255.255", "Total": 255, "Used": "250"}
+		{"Scope": "10.1.1.1 255.255.255.0", "Total": 100, "Used": 5, "DeviceClass":"", "Vendor":""},
+        {"Scope": "1.1.1.1 255.255.255.0", "Total": 100, "Used": 5, "DeviceClass":"", "Vendor":""},
+        {"Scope": "2.1.1.1 255.255.255.0", "Total": 50, "Used": 25, "DeviceClass":"", "Vendor":""},
+        {"Scope": "3.1.1.1 255.255.255.254", "Total": 200, "Used": 40, "DeviceClass":"", "Vendor":""},
+		{"Scope": "255.255.255.255 255.255.0.0", "Total": 255, "Used": 250, "DeviceClass":"", "Vendor":""}
 
     ]
 }
