@@ -84,7 +84,7 @@ $(document).ready(function(){
 
 	
     $("#applyBtn").click(function() {
-		reflesh();
+       reflesh();
 	});
 
 		/*
