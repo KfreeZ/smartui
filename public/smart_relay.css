@@ -1,5 +1,6 @@
 body{
-    padding-top: 70px;
+    /*padding-top: 70px;*/
+    /*padding-bottom:30px;*/
     /*background-color:#CCC;*/
 }
 
@@ -15,6 +16,9 @@ hr.divider2{
     margin:30px 0;
 }
 
+.divider_modal{
+    margin:10px 0;
+}
 p.tabp2{
     text-align:center;
 }
@@ -27,4 +31,17 @@ p.tabp2{
     fonsize:50px;
     color: #2a6496;
     margin-top:50px;
+}
+
+div.modal-body{
+    text-align:center;
+}
+
+.templatemo-footer {
+    clear: both;
+    font-size: 13px;
+    padding: 8px 0 5px 0;
+    text-align: center;
+    color: #ccc;
+    background-color: #333;
 }
