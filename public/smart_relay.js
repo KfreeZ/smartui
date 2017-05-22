@@ -1,15 +1,16 @@
 $(document).ready(function(){
 	
-	reflesh();
-	setInterval(reflesh, 5000);
-	
+
     var vendor = document.getElementById('vendor');
     // console.log(detail_scope0);
     console.log(vendor);
     var modeValue;
-    var vendorValue = new Array(10);
-    var deviceValue = new Array(10);
+	var cfgArray = new Array();
 	var listNum = 0;
+
+	reflesh();
+	setInterval(reflesh, 5000);
+	
 
     $("#mode li").click(function() {
         // console.log('click');
@@ -18,7 +19,45 @@ $(document).ready(function(){
         $("#modeType").text(modeValue);
     });
 
+	function textTransfer(str) {
+		if (str == "Cancel" || str == "Vendor" || str == "Device") {
+			return "NULL";
+		}
+		return str;
+	}
+	
+	function setVendorBtn(index) {
+		$(".vendorList:eq(" + index + ")").find("a").click(function() {
+			cfgArray[index].vendor = textTransfer($(this).text());
+		    if (cfgArray[index].vendor == "NULL") {
+		    	$(".vendorBtn:eq(" + index + ")").text("Vendor");
+		    	$(".vendorBtn:eq(" + index + ")").css("color","black");
+		    } else {
+		    	$(".vendorBtn:eq(" + index + ")").text(cfgArray[index].vendor);
+		    	$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
+		    }
+		});
+	}
+	function setDeviceBtn(index) {
+		$(".deviceList:eq(" + index + ")").find("a").click(function() {
+		    cfgArray[index].device = textTransfer($(this).text()); 
+		    if (cfgArray[index].device[index] == "NULL") {
+		    	$(".deviceBtn:eq(" + index + ")").text("Device");
+		    	$(".deviceBtn:eq(" + index + ")").css("color","black");
+		    } else {
+		    	$(".deviceBtn:eq(" + index + ")").text(cfgArray[index].device);
+		    	$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
+		    }
+		});	
+	}
+	
+	
 	function reflesh() {
+<<<<<<< HEAD
+=======
+		console.log("Mode changes to: " + modeValue)
+		console.log("reflesh");
+>>>>>>> origin/master
 		$.ajaxSettings.async = false;
 		$.getJSON("./update", function(data) {
       console.log(data)
@@ -26,10 +65,18 @@ $(document).ready(function(){
 			listNum = data.DhcpStatus.length;
 			
 			if (listNum > oldListNum) {
+<<<<<<< HEAD
 				for (i = 0; i < listNum - oldListNum; i++) {
 					$.get("public/row.html", function(row) {
+=======
+				for (i = oldListNum; i < listNum; i++) {
+					$.get("./row.html", function(row) {
+>>>>>>> origin/master
 						$("#display").append(row);	
 					});
+					
+					setVendorBtn(i);
+					setDeviceBtn(i);
 				}
 			} else {
 				for (i = 0; i < oldListNum - listNum; i++) {
@@ -39,13 +86,62 @@ $(document).ready(function(){
 			}
 
 			$(".scope").each(function(index) {
+<<<<<<< HEAD
 				$(this).html(data.DhcpStatus[index].Scope + "<br>");
+=======
+				var scope = data.dhcpstatus[index].scope;
+				$(this).html(scope + "<br>");
+				
+				
+				for (i = 0; i < cfgArray.length; i++) {
+					console.log(i);
+					console.log(scope);
+					console.log(cfgArray[i].scope);
+					if (scope == cfgArray[i].scope) {
+						if (cfgArray[i].vendor == "NULL") {
+							$(".vendorBtn:eq(" + index + ")").text("Vendor");
+							$(".vendorBtn:eq(" + index + ")").css("color","black");
+						} else {
+							$(".vendorBtn:eq(" + index + ")").text(cfgArray[i].vendor);
+							$(".vendorBtn:eq(" + index + ")").css("color","#3473B2");
+						}
+						if (cfgArray[i].device == "NULL") {
+							$(".deviceBtn:eq(" + index + ")").text("Device");
+							$(".deviceBtn:eq(" + index + ")").css("color","black");
+						} else {
+							$(".deviceBtn:eq(" + index + ")").text(cfgArray[i].device);
+							$(".deviceBtn:eq(" + index + ")").css("color","#3473B2");
+						}
+						break;
+					}
+				}
+				if (i == cfgArray.length) {
+					$(".vendorBtn:eq(" + index + ")").text("Vendor");
+					$(".vendorBtn:eq(" + index + ")").css("color","black");
+					
+					$(".deviceBtn:eq(" + index + ")").text("Device");
+					$(".deviceBtn:eq(" + index + ")").css("color","black");
+				}
+>>>>>>> origin/master
 			});
+			
+			cfgArray.splice(0, cfgArray.length);
+			for (i = 0; i < listNum; i++) {
+				var cfgValue = 
+				{
+					"scope": data.dhcpstatus[i].scope,
+					"vendor": textTransfer($(".vendorBtn:eq(" + i + ")").text()),
+					"device": textTransfer($(".deviceBtn:eq(" + i + ")").text()),		
+				}
+				cfgArray.push(cfgValue);
+			}
+			
 			$(".progress-bar").each(function(index) {
 				var total = data.DhcpStatus[index].Total;
 				var used = data.DhcpStatus[index].Used;
 				var percentage = 100 * used/total;
-				$(this).html("total:" + total + "; used:" + used);
+				percentage = percentage.toFixed(2);
+				$(this).html(percentage + "%");
 				$(this).attr("style", "width: " + percentage + "%");
 				if (percentage > 90) {
 					$(this).attr("class", "scopebar progress-bar progress-bar-danger");
@@ -53,30 +149,10 @@ $(document).ready(function(){
 					$(this).attr("class", "scopebar progress-bar");
 				}
 			});
-			$(".vendorList").each(function(index) {
-				$(this).find("a").click(function() {
-					vendorValue[index] = $(this).text(); 
-					if (vendorValue[index] == "Cancel") {
-						$(".vendorBtn:eq(" + index + ")").text("Vendor");
-						$(".vendorBtn:eq(" + index + ")").css("color","black");
-					} else {
-						$(".vendorBtn:eq(" + index + ")").text(vendorValue[index]);
-						$(".vendorBtn:eq(" + index + ")").css("color","blue");
-					}
-				});
-			});
-			$(".deviceList").each(function(index) {
-				$(this).find("a").click(function() {
-					deviceValue[index] = $(this).text(); 
-					if (deviceValue[index] == "Cancel") {
-						$(".deviceBtn:eq(" + index + ")").text("Device");
-						$(".deviceBtn:eq(" + index + ")").css("color","black");
-					} else {
-						$(".deviceBtn:eq(" + index + ")").text(deviceValue[index]);
-						$(".deviceBtn:eq(" + index + ")").css("color","blue");
-					}
-				});
-			});
+			
+			
+			
+			
 			
 		});
 		$.ajaxSettings.async = true;
@@ -84,7 +160,7 @@ $(document).ready(function(){
 
 	
     $("#applyBtn").click(function() {
-		reflesh();
+       reflesh();
 	});
 
 		/*
