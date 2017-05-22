@@ -61,16 +61,25 @@ $(document).ready(function(){
 	
 	
 	function reflesh() {
+<<<<<<< HEAD
+=======
 		console.log("Mode changes to: " + modeValue)
 		console.log("reflesh");
+>>>>>>> origin/master
 		$.ajaxSettings.async = false;
-		$.getJSON("./output.json", function(data) {
+		$.getJSON("./update", function(data) {
+      console.log(data)
 			var oldListNum = $(".row").length;
-			listNum = data.dhcpstatus.length;
+			listNum = data.DhcpStatus.length;
 			
 			if (listNum > oldListNum) {
+<<<<<<< HEAD
+				for (i = 0; i < listNum - oldListNum; i++) {
+					$.get("public/row.html", function(row) {
+=======
 				for (i = oldListNum; i < listNum; i++) {
 					$.get("./row.html", function(row) {
+>>>>>>> origin/master
 						$("#display").append(row);	
 					});
 					
@@ -85,6 +94,9 @@ $(document).ready(function(){
 			}
 
 			$(".scope").each(function(index) {
+<<<<<<< HEAD
+				$(this).html(data.DhcpStatus[index].Scope + "<br>");
+=======
 				var scope = data.dhcpstatus[index].scope;
 				$(this).html(scope + "<br>");
 				
@@ -100,6 +112,7 @@ $(document).ready(function(){
 					setVendorText("NULL", index);
 					setDeviceText("NULL", index);
 				}
+>>>>>>> origin/master
 			});
 			
 			cfgArray.splice(0, cfgArray.length);
@@ -114,8 +127,8 @@ $(document).ready(function(){
 			}
 			
 			$(".progress-bar").each(function(index) {
-				var total = data.dhcpstatus[index].total;
-				var used = data.dhcpstatus[index].used;
+				var total = data.DhcpStatus[index].Total;
+				var used = data.DhcpStatus[index].Used;
 				var percentage = 100 * used/total;
 				percentage = percentage.toFixed(2);
 				$(this).html(percentage + "%");
