@@ -3,20 +3,26 @@
 <head>
 	<meta charset="utf-8">
 	<title>Smart Relay</title>
-	<link rel="stylesheet" href="/smartui/public/bootstrap-3.3.7-dist/css/bootstrap.min.css">  
+	<link rel="stylesheet" href="./public/bootstrap-3.3.7-dist/css/bootstrap.min.css">  
 <!-- 	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script> -->
-  <script  type="text/javascript" src="/smartui/public/jquery-3.2.1.min.js"></script>
-	<script src="/smartui/public/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+  <script  type="text/javascript" src="./public/jquery-3.2.1.min.js"></script>
+	<script src="./public/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
-	<link href="/smartui/public/smart_relay.css" rel="stylesheet" type="text/css" />
+	<link href="./public/smart_relay.css" rel="stylesheet" type="text/css" />
 	<script type=text/javascript src=public/smart_relay.js></script>
-	<script src="/smartui/public/echarts.min.js"></script>
+	<script src="./public/echarts.min.js"></script>
 	<style>
 	.font1
 	{
 		font-family: Consolas, Monospace;
 		font-weight: bold
 	} 
+	.center-vertical
+	{
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+	}
   </style>
 
 </head>
@@ -53,11 +59,11 @@
     </nav>
 
     <div class="container">
-        <div>
-            <div class="col-md-4  btn-group">
+        <div class="row">
+            <div class="col-md-1 btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 					<span class="glyphicon glyphicon glyphicon-cog"> 
-					<span id="modeType">Mode</span>
+					<span id="modeText">Mode</span>
 					<span class="caret"></span>
                 </button> 
                 <ul id="mode" class="dropdown-menu">
@@ -65,9 +71,8 @@
 					<li><a tabindex="-1">FIFO</a></li>
                 </ul>                                 
             </div>
-            <div class="col-md-4 col-md-offset-4">
+            <div class="col-md-1 col-md-offset-10">
 				<button id="applyBtn" class="btn btn-primary" type="submit">
-					<span class="glyphicon glyphicon-plus"></span>
 					Apply
 				</button>
             </div>

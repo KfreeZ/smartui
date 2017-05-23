@@ -13,7 +13,7 @@ $(document).ready(function(){
     $("#mode li").click(function() {
         localCfg.Mode = $(this).text();
         console.log("Mode changes to: " + localCfg.Mode)
-        $("#modeType").text(localCfg.Mode);
+        $("#modeText").text(localCfg.Mode);
     });
 
 	function maskToPrefix(mask) {
@@ -75,10 +75,10 @@ $(document).ready(function(){
 	
 	function reflesh() {
 		$.ajaxSettings.async = false;
-		$.getJSON("./update", function(data) {
-		// $.getJSON("./public/output.json", function(data) {
+		//$.getJSON("./update", function(data) {
+		$.getJSON("./public/output.json", function(data) {
 		console.log(data)
-			var oldListNum = $(".row").length;
+			var oldListNum = $(".scopeList").length;
 			var listNum = data.DhcpStatus.length;
 			
 			if (listNum > oldListNum) {
@@ -93,7 +93,7 @@ $(document).ready(function(){
 				}
 			} else {
 				for (i = 0; i < oldListNum - listNum; i++) {
-					$(".row:last").remove();
+					$(".scopeList:last").remove();
 					$(".rowDivider:last").remove();	
 				}
 			}
@@ -137,13 +137,14 @@ $(document).ready(function(){
 				var used = data.DhcpStatus[index].Used;
 				var percentage = 100 * used/total;
 				percentage = Math.round(percentage * 100)/100;
-				$(this).html(percentage + "%");
+				
 				$(this).attr("style", "width: " + percentage + "%");
 				if (percentage > 90) {
 					$(this).attr("class", "scopebar progress-bar progress-bar-danger");
 				} else {
 					$(this).attr("class", "scopebar progress-bar");
 				}
+				$(this).children().html(percentage + "%");
 			});	
 			
 		});
