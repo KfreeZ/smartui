@@ -71,12 +71,13 @@ $(document).ready(function(){
 			setDeviceText(localCfg.DhcpStatus[deviceID].DeviceClass, deviceID);			
 		});	
 	}
-	
+
+
 	
 	function reflesh() {
 		$.ajaxSettings.async = false;
-		$.getJSON("./update", function(data) {
-		// $.getJSON("./public/output.json", function(data) {
+		// $.getJSON("./update", function(data) {
+		$.getJSON("./public/output.json", function(data) {
 		console.log(data)
 			var oldListNum = $(".row").length;
 			var listNum = data.DhcpStatus.length;
@@ -117,13 +118,47 @@ $(document).ready(function(){
 				}
 				
 				$(".detail:eq(" + index + ")").click(function() {
-					$("#detail_info").empty();
-					$("#detail_info").text(data.DhcpStatus[index].Scope);
+					// $("#detail_info").empty();
+					// // $("#detail_info").text(data.DhcpStatus[index].Scope);
+					// text = 	"Scope :   " + data.DhcpStatus[index].Scope + "<br>"
+			 	// 			+ "Total :   " + data.DhcpStatus[index].Total + "<br>"
+			 	// 			+ "Used :   " + data.DhcpStatus[index].Used + "<br>"
+			 	// 			+ "Avail :   " + data.DhcpStatus[index].Avail + "<br>"
+			 	// 			+ "Unavail :   " + data.DhcpStatus[index].Unavail + "<br>"
+			 	// 			+ "Deactivated :   " + data.DhcpStatus[index].Deactivated + "<br>"
+			 	// 			+ "Offered :   " + data.DhcpStatus[index].Offered + "<br>"
+			 	// 			+ "TotalDynamic :  " + data.DhcpStatus[index].TotalDynamic + "<br>"
+			 	// 			+ "TotalReserved :  " + data.DhcpStatus[index].TotalReserved;
+			 	// 	$("#detail_info").html(text);
+
+					$("#InfoIndex").empty();
+					$("#InfoValue").empty();
+					indexText = 
+								// "Scope :   " +  "<br>"
+			 					 "Total :   " + "<br>"
+			 					+ "Used :   " + "<br>"
+			 					+ "Avail :   " +  "<br>"
+			 					+ "Unavail :   " + "<br>"
+			 					+ "Deactivated :   " + "<br>"
+			 					+ "Offered :   " + "<br>"
+			 					+ "TotalDynamic :  " + "<br>"
+			 					+ "TotalReserved :  ";
+					
+					valueText = 
+								// data.DhcpStatus[index].Scope + "<br>"
+			 					 data.DhcpStatus[index].Total + "<br>"
+			 					+ data.DhcpStatus[index].Used + "<br>"
+			 					+ data.DhcpStatus[index].Avail + "<br>"
+			 					+ data.DhcpStatus[index].Unavail + "<br>"
+			 					+ data.DhcpStatus[index].Deactivated + "<br>"
+			 					+ data.DhcpStatus[index].Offered + "<br>"
+			 					+ data.DhcpStatus[index].TotalDynamic + "<br>"
+			 					+ data.DhcpStatus[index].TotalReserved;
+					$("#scopeTiTle").html(data.DhcpStatus[index].Scope)
+					$("#InfoIndex").html(indexText);
+					$("#InfoValue").html(valueText);					
 				});
-					
-					
-				
-				
+									
 			});
 			
 			localCfg.DhcpStatus = data.DhcpStatus;
