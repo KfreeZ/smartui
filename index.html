@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="public/bootstrap-3.3.7-dist/css/bootstrap.min.css">  
   <script  type="text/javascript" src="public/jquery-3.2.1.min.js"></script>
   <script src="public/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
   <link href="public/smart_relay.css" rel="stylesheet" type="text/css" />
   <script type=text/javascript src=public/smart_relay.js></script>
   <script src="public/echarts.min.js"></script>
@@ -26,8 +25,8 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-1 btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <div class="col-md-2">
+                <button id="modeBtn" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 					<span class="glyphicon glyphicon glyphicon-cog"> 
 					<span id="modeText">Mode</span>
 					<span class="caret"></span>
@@ -37,8 +36,8 @@
 					<li><a tabindex="-1">FIFO</a></li>
                 </ul>                                 
             </div>
-            <div class="col-md-1 col-md-offset-10">
-				<button id="applyBtn" class="btn btn-primary" type="submit">
+            <div class="col-md-1 col-md-offset-9">
+				<button id="applyBtn" type="button" class="btn btn-primary" type="submit">
 					Apply
 				</button>
             </div>
