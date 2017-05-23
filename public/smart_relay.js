@@ -177,10 +177,13 @@ $(document).ready(function(){
 
 
 	$("#applyBtn").click(function() {
-		var myData= JSON.stringify(localCfg);
+		var myData = JSON.stringify(localCfg);
 		console.log("apply btn:");
 		console.log(myData);
-		$.post("./apply",myData,reflesh());
+		$.post("./apply", myData, function(postData, status) {
+			alert("Apply " + status);
+			reflesh();
+		});
 	});
 });
 
