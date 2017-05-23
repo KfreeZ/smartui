@@ -1,16 +1,13 @@
 $(document).ready(function(){
 	
     var modeValue;
-	//var cfgArray = new Array();
 	var localCfg = new Array();
-	var listNum = 0;
 
 	reflesh();
 	setInterval(reflesh, 5000);	
 
     $("#mode li").click(function() {
-        // console.log('click');
-        modeValue = $(this).text();       //获取点击li的值   
+        modeValue = $(this).text();
         console.log("Mode changes to: " + modeValue)
         $("#modeType").text(modeValue);
     });
@@ -78,10 +75,10 @@ $(document).ready(function(){
 		$.getJSON("./public/output.json", function(data) {
 		console.log(data)
 			var oldListNum = $(".row").length;
-			listNum = data.DhcpStatus.length;
+			var listNum = data.DhcpStatus.length;
 			
 			if (listNum > oldListNum) {
-				for (i = 0; i < listNum - oldListNum; i++) {
+				for (i = oldListNum; i < listNum; i++) {
 					$.get("public/row.html", function(row) {
 						$("#display").append(row);	
 					});
