@@ -1,7 +1,7 @@
 {"DhcpStatus" : 
     [
 	
-		{"Scope": "10.1.1.1 255.255.255.0", "Total": 100, "Used": 5, "DeviceClass":"", "Vendor":""},
+		{"Scope": "10.1.1.1 255.255.255.0", "Total": 100, "Used": 0, "DeviceClass":"", "Vendor":""},
         {"Scope": "1.1.1.1 255.255.255.0", "Total": 100, "Used": 5, "DeviceClass":"", "Vendor":""},
         {"Scope": "2.1.1.1 255.255.255.0", "Total": 50, "Used": 25, "DeviceClass":"", "Vendor":""},
         {"Scope": "3.1.1.1 255.255.255.254", "Total": 200, "Used": 40, "DeviceClass":"", "Vendor":""},
