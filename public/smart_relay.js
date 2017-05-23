@@ -161,6 +161,7 @@ $(document).ready(function(){
 									
 			});
 			
+			localCfg.Mode = $("#modeText").text();
 			localCfg.DhcpStatus = data.DhcpStatus;
 			for (i = 0; i < localCfg.DhcpStatus.length; i++) {
 				localCfg.DhcpStatus[i].DeviceClass = textTransfer($(".deviceBtn:eq(" + i + ")").text());
