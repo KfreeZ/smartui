@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 	var localCfg = {
-		"Mode" : "Balance",
+		"Mode" : "NULL",
 		"DhcpStatus" : []
 	}
 
@@ -77,6 +77,10 @@ $(document).ready(function(){
 		console.log(data)
 			var oldListNum = $(".scopeList").length;
 			var listNum = data.DhcpStatus.length;
+			
+			if (localCfg.Mode == "NULL") {
+				$("#modeText").text(data.Mode);
+			}
 			
 			if (listNum > oldListNum) {
 				for (i = oldListNum; i < listNum; i++) {

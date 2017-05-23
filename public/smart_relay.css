@@ -1,15 +1,14 @@
 body {
-    /*padding-top: 70px;*/
-    /*padding-bottom:30px;*/
 	background-color: #FAFAFA;
-	//height:100%;
 }
 
-.div {
-	position: relative;
-	height:100%;	
+#modeText {
+	font-family: Arial, Helvetica, sans-serif;
 }
 
+#applyBtn {
+	font-family: Arial, Helvetica, sans-serif;
+}
 .rowDivider {
     margin:13px 0;
 }
@@ -20,9 +19,6 @@ body {
 
 .divider_modal {
     margin:10px 0;
-}
-p.tabp2 {
-    text-align:center;
 }
 
 .feature {
