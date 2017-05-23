@@ -108,8 +108,8 @@ $(document).ready(function(){
 					}
 				}
 				if (i == localCfg.DhcpStatus.length) {
-					setVendorText("NULL", index);
-					setDeviceText("NULL", index);
+					setVendorText(data.DhcpStatus[index].Vendor, index);
+					setDeviceText(data.DhcpStatus[index].DeviceClass, index);
 				}
 				
 				$(".detail:eq(" + index + ")").click(function() {
