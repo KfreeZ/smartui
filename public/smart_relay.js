@@ -9,7 +9,12 @@ $(document).ready(function(){
 	setInterval(reflesh, 5000);	
 
     $("#mode li").click(function() {
-        localCfg.Mode = $(this).text();
+        if ($(this).text() == "SEQUENCED") {
+			localCfg.Mode = "FIFO";
+		} else {
+			localCfg.Mode = $(this).text();
+		}
+		
         console.log("Mode changes to: " + localCfg.Mode)
         $("#modeText").text(localCfg.Mode);
     });

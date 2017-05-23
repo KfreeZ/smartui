@@ -2,11 +2,6 @@ body {
 	background-color: #FAFAFA;
 }
 
-#modeBtn {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 120%
-}
-
 #applyBtn {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 120%
@@ -74,9 +69,11 @@ div.modal-body {
 }
 .vendorList	{
 	font-size: 95%;
+	width: 110px;
 }
 .deviceList	{
 	font-size: 95%;
+	width: 110px;
 }
 
 #detail_info{
