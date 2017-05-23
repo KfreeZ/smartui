@@ -37,7 +37,6 @@ $(document).ready(function(){
 	}
 	
 	function setVendorText(str, vendorID) {
-		str = textTransfer(str);
 		if (str == "NULL") {
 		    $(".vendorBtn:eq(" + vendorID + ")").text("Vendor");
 		    $(".vendorBtn:eq(" + vendorID + ")").css("color","black");
@@ -47,7 +46,6 @@ $(document).ready(function(){
 		}
 	}
 	function setDeviceText(str, deviceID) {
-		str = textTransfer(str);
 		if (str == "NULL") {
 		    $(".deviceBtn:eq(" + deviceID + ")").text("Device");
 		    $(".deviceBtn:eq(" + deviceID + ")").css("color","black");
@@ -59,13 +57,13 @@ $(document).ready(function(){
 	
 	function setVendorBtn(vendorID) {
 		$(".vendorList:eq(" + vendorID + ")").find("a").click(function() {
-			localCfg.DhcpStatus[vendorID].Vendor = $(this).text();
+			localCfg.DhcpStatus[vendorID].Vendor = textTransfer($(this).text());
 			setVendorText(localCfg.DhcpStatus[vendorID].Vendor, vendorID);
 		});
 	}
 	function setDeviceBtn(deviceID) {
 		$(".deviceList:eq(" + deviceID + ")").find("a").click(function() {
-		    localCfg.DhcpStatus[deviceID].DeviceClass = $(this).text();
+		    localCfg.DhcpStatus[deviceID].DeviceClass = textTransfer($(this).text());
 			setDeviceText(localCfg.DhcpStatus[deviceID].DeviceClass, deviceID);			
 		});	
 	}
@@ -119,7 +117,7 @@ $(document).ready(function(){
 					$("#InfoIndex").empty();
 					$("#InfoValue").empty();
 					indexText = 
-			 					 "Total :   " + "<br>"
+			 					  "Total :   " + "<br>"
 			 					+ "Used :   " + "<br>"
 			 					+ "Avail :   " +  "<br>"
 			 					+ "Unavail :   " + "<br>"
@@ -129,7 +127,7 @@ $(document).ready(function(){
 			 					+ "TotalReserved :  ";
 					
 					valueText = 
-			 					 data.DhcpStatus[index].Total + "<br>"
+			 					  data.DhcpStatus[index].Total + "<br>"
 			 					+ data.DhcpStatus[index].Used + "<br>"
 			 					+ data.DhcpStatus[index].Avail + "<br>"
 			 					+ data.DhcpStatus[index].Unavail + "<br>"
