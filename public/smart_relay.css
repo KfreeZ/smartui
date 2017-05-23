@@ -66,15 +66,7 @@ div.modal-body {
 	transform: translateY(-50%);
 }
 .barText {
-	font-size: 115%;
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
-}
-.BAR {
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
+	font-size: 120%;
 }
 .vendorBtn {
 	font-size: 110%;
@@ -90,7 +82,7 @@ div.modal-body {
 }
 
 #detail_info{
-    font-size:18px;
+    font-size: 18px;
     text-align: left;
 }
 
