@@ -1,39 +1,35 @@
-body{
+body {
     /*padding-top: 70px;*/
     /*padding-bottom:30px;*/
-    /*background-color:#CCC;*/
+	background-color: #FAFAFA;
 }
 
-hr.divider{
-    margin:40px 0;
+.rowDivider {
+    margin:13px 0;
 }
 
-hr.divider1{
-    margin:20px 0;
+.menuDivider {
+    margin:2px 0;
 }
 
-hr.divider2{
-    margin:30px 0;
-}
-
-.divider_modal{
+.divider_modal {
     margin:10px 0;
 }
-p.tabp2{
+p.tabp2 {
     text-align:center;
 }
 
-.feature{
+.feature {
     padding:30px 0;
 }
-.feature-heading{
+.feature-heading {
     text-align:center;
     fonsize:50px;
     color: #2a6496;
     margin-top:50px;
 }
 
-div.modal-body{
+div.modal-body {
     text-align:center;
 }
 
@@ -44,6 +40,47 @@ div.modal-body{
     text-align: center;
     color: #ccc;
     background-color: #333;
+}
+
+.scope {
+	padding: 0px 3px;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 120%;
+	font-weight: bold;
+	color: #3473B2;
+}
+.titleText {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 170%;
+	color: #CCCCCC; 
+}
+.vertical-center {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.barText {
+	font-size: 115%;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.BAR {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.vendorBtn {
+	font-size: 110%;
+}
+.deviceBtn {
+	font-size: 110%;
+}
+.vendorList	{
+	font-size: 95%;
+}
+.deviceList	{
+	font-size: 95%;
 }
 
 #detail_info{
