@@ -89,6 +89,7 @@ $(document).ready(function(){
 					
 					setVendorBtn(i);
 					setDeviceBtn(i);
+					
 				}
 			} else {
 				for (i = 0; i < oldListNum - listNum; i++) {
@@ -135,35 +136,15 @@ $(document).ready(function(){
 				} else {
 					$(this).attr("class", "scopebar progress-bar");
 				}
-			});
-			
-			
-			
-			
+			});	
 			
 		});
 		$.ajaxSettings.async = true;
 	};
 
 
-
-
 	$("#applyBtn").click(function() {
-		myData={	};
-    	console.log(data);
-    	var aj = $.ajax( {    
-	        url:'apply',  
-	        data:myData,
-	        type:'post',    
-	        cache:true,  
-	        dataType:'json', 	
-	    	success:function(data) {                     
-	           	reflesh();
-        	},    
-        	error:function() {    
-            	alert("异常！");    
-        	} 
-	    });
+		$.post("URL",localCfg,reflesh());
 	});
 
 
