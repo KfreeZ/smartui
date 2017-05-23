@@ -16,72 +16,28 @@ import (
     _ "github.com/go-sql-driver/mysql"
 )
 
-type Page struct {
-	Title string
-	Body  []byte
-}
 
-
-type CnrStatusSlice struct {
-	DhcpStatus []CnrStatus
-}
-
-type CnrStatus struct {
+type ScpInfo struct {
 	Scope string
-	Total int
-	Used int
 	DeviceClass string
 	Vendor string
+	Total int
+	Used int
+	Avail int
+	Unavail int
+	Deactivated int
+	Offered int
+	TotalDynamic int
+	TotalReserved int
 }
 
 
-type CnrCfg struct {
+type AllInfo struct {
 	Mode string
 	//web send the json named DhcpStauts
-	DhcpStatus []CnrStatus
+	DhcpStatus []ScpInfo
 }
 
-func (p *Page) save() error {
-	filename := p.Title + ".txt"
-	return ioutil.WriteFile(filename, p.Body, 0600)
-}
-
-func loadPage(title string) (*Page, error) {
-	filename := title + ".txt"
-	body, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-	return &Page{Title: title, Body: body}, nil
-}
-
-func viewHandler(w http.ResponseWriter, r *http.Request, title string) {
-	p, err := loadPage(title)
-	if err != nil {
-		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
-		return
-	}
-	renderTemplate(w, "view", p)
-}
-
-func editHandler(w http.ResponseWriter, r *http.Request, title string) {
-	p, err := loadPage(title)
-	if err != nil {
-		p = &Page{Title: title}
-	}
-	renderTemplate(w, "edit", p)
-}
-
-func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
-	body := r.FormValue("body")
-	p := &Page{Title: title, Body: []byte(body)}
-	err := p.save()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	http.Redirect(w, r, "/view/"+title, http.StatusFound)
-}
 
 func smartUiHandler(w http.ResponseWriter, r *http.Request, title string) {
 	log.Println("come to " + title+".html")
@@ -102,7 +58,7 @@ func applyHandler(w http.ResponseWriter, r *http.Request, title string) {
     // 	{"Scope": "80.6.6.96 255.255.255.224", "DeviceClass": "cm", "Vendor": "sa"}
     // 	]}`)
 
-    var cfg CnrCfg
+    var cfg AllInfo
     err := json.Unmarshal(rcvd, &cfg)
 	fmt.Printf("%s\n", cfg)
 
@@ -167,20 +123,30 @@ func updateHandler(w http.ResponseWriter, r *http.Request, title string) {
 	panic(err.Error()) // proper error handling instead of panic in your app
 	}
 
+
+	var resSlice  AllInfo
+ 	
+ 	var method string
+    err1 := db.QueryRow("SELECT * from DhcpMethod").Scan(&method)
+    if err1!= nil {
+        return 
+    }
+    resSlice.Mode = method
+    fmt.Printf("%s\n", resSlice.Mode)
+
 	rows, err := db.Query("select * from DhcpScopes")
 	if err != nil {
 	    log.Fatal(err)
 	}
 
-	var resSlice  CnrStatusSlice
 	for rows.Next() {
 	    var name, dc, vdr string
-	    var total, used, ava, unava, detach, offer, dyn, rsrvd int
-	    if err := rows.Scan(&name, &total, &used, &ava, &unava, &detach, &offer, &dyn, &rsrvd, &dc, &vdr); err != nil {
+	    var total, used, ava, unava, deactive, offer, dyn, rsrvd int
+	    if err := rows.Scan(&name, &total, &used, &ava, &unava, &deactive, &offer, &dyn, &rsrvd, &dc, &vdr); err != nil {
 	        log.Fatal(err)
 	    }
-	    fmt.Printf("%s %s %s %d %d\n", name, dc, vdr, total, used)
-	    scp := CnrStatus{name, total, total-ava, dc, vdr}
+	    fmt.Printf("%s %s %s %d %d %d %d %d %d %d %d\n", name, dc, vdr, total, used, ava, unava, deactive, offer, dyn, rsrvd)
+	    scp := ScpInfo{name, dc, vdr, total, used, ava, unava, deactive, offer, dyn, rsrvd}
 	    resSlice.DhcpStatus = append(resSlice.DhcpStatus, scp)
 	}
 	if err := rows.Err(); err != nil {
@@ -197,15 +163,9 @@ func updateHandler(w http.ResponseWriter, r *http.Request, title string) {
 
 }
 
-var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+
 var sr_tmplt = template.Must(template.ParseFiles("index.html"))
 
-func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	err := templates.ExecuteTemplate(w, tmpl+".html", p)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
 
 var validPath = regexp.MustCompile("^/(edit|save|view|smartui)/([a-zA-Z0-9]+)$")
 
@@ -223,10 +183,6 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 
 
 func main() {
-	// http.HandleFunc("/view/", makeHandler(viewHandler))
-	// http.HandleFunc("/edit/", makeHandler(editHandler))
-	// http.HandleFunc("/save/", makeHandler(saveHandler))
-
 	http.HandleFunc("/smartui/index", makeHandler(smartUiHandler))
 	http.HandleFunc("/smartui/apply", makeHandler(applyHandler))
 	http.HandleFunc("/smartui/update", makeHandler(updateHandler))
