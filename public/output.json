@@ -1,11 +1,9 @@
 {"DhcpStatus" : 
     [
-	
-		{"Scope": "10.1.1.1 255.255.255.0", "Total": 100, "Used": 0, "DeviceClass":"", "Vendor":""},
-        {"Scope": "1.1.1.1 255.255.255.0", "Total": 100, "Used": 5, "DeviceClass":"", "Vendor":""},
-        {"Scope": "2.1.1.1 255.255.255.0", "Total": 50, "Used": 25, "DeviceClass":"", "Vendor":""},
-        {"Scope": "3.1.1.1 255.255.255.254", "Total": 200, "Used": 40, "DeviceClass":"", "Vendor":""},
-		{"Scope": "255.255.255.255 255.255.255.255", "Total": 255, "Used": 250, "DeviceClass":"", "Vendor":""}
-
+		{"Scope": "10.1.1.1 255.255.255.0", "DeviceClass":"", "Vendor":"","Total": 100, "Used": 5, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":28, "TotalReserved":1},
+        {"Scope": "1.1.1.1 255.255.255.0", "DeviceClass":"", "Vendor":"", "Total": 100, "Used": 5, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":10, "TotalReserved":3},
+        {"Scope": "2.1.1.1 255.255.255.0", "DeviceClass":"", "Vendor":"","Total": 50, "Used": 25, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":20, "TotalReserved":10},
+        {"Scope": "3.1.1.1 255.255.255.254",  "DeviceClass":"", "Vendor":"","Total": 200, "Used": 40, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":8, "TotalReserved":30},
+		{"Scope": "255.255.255.255 255.255.0.0", "DeviceClass":"", "Vendor":"","Total": 255, "Used": 250, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":2, "TotalReserved":40}
     ]
 }
