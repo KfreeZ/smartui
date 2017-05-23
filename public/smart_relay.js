@@ -1,15 +1,19 @@
 $(document).ready(function(){
 	
-    var modeValue;
-	var localCfg = new Array();
+    //var modeValue;
+	var localCfg = {
+		"Mode" : "Balance",
+		"DhcpStatus" : []
+	}
+	//var localCfg = new Array();
 
 	reflesh();
 	setInterval(reflesh, 5000);	
 
     $("#mode li").click(function() {
-        modeValue = $(this).text();
-        console.log("Mode changes to: " + modeValue)
-        $("#modeType").text(modeValue);
+        localCfg.Mode = $(this).text();
+        console.log("Mode changes to: " + localCfg.Mode)
+        $("#modeType").text(localCfg.Mode);
     });
 
 	function maskToPrefix(mask) {
@@ -57,14 +61,14 @@ $(document).ready(function(){
 	
 	function setVendorBtn(vendorID) {
 		$(".vendorList:eq(" + vendorID + ")").find("a").click(function() {
-			localCfg[vendorID].Vendor = $(this).text();
-			setVendorText(localCfg[vendorID].Vendor, vendorID);
+			localCfg.DhcpStatus[vendorID].Vendor = $(this).text();
+			setVendorText(localCfg.DhcpStatus[vendorID].Vendor, vendorID);
 		});
 	}
 	function setDeviceBtn(deviceID) {
 		$(".deviceList:eq(" + deviceID + ")").find("a").click(function() {
-		    localCfg[deviceID].DeviceClass = $(this).text();
-			setDeviceText(localCfg[deviceID].DeviceClass, deviceID);			
+		    localCfg.DhcpStatus[deviceID].DeviceClass = $(this).text();
+			setDeviceText(localCfg.DhcpStatus[deviceID].DeviceClass, deviceID);			
 		});	
 	}
 	
@@ -100,23 +104,23 @@ $(document).ready(function(){
 				$(this).html(scopeDisplay(scope) + "<br>");
 				
 				
-				for (i = 0; i < localCfg.length; i++) {
-					if (scope == localCfg[i].Scope) {
-						setVendorText(localCfg[i].Vendor, index);
-						setDeviceText(localCfg[i].DeviceClass, index);
+				for (i = 0; i < localCfg.DhcpStatus.length; i++) {
+					if (scope == localCfg.DhcpStatus[i].Scope) {
+						setVendorText(localCfg.DhcpStatus[i].Vendor, index);
+						setDeviceText(localCfg.DhcpStatus[i].DeviceClass, index);
 						break;
 					}
 				}
-				if (i == localCfg.length) {
+				if (i == localCfg.DhcpStatus.length) {
 					setVendorText("NULL", index);
 					setDeviceText("NULL", index);
 				}
 			});
 			
-			localCfg = data.DhcpStatus;
-			for (i = 0; i < localCfg.length; i++) {
-				localCfg[i].DeviceClass = textTransfer($(".deviceBtn:eq(" + i + ")").text());
-				localCfg[i].Vendor = textTransfer($(".vendorBtn:eq(" + i + ")").text());	
+			localCfg.DhcpStatus = data.DhcpStatus;
+			for (i = 0; i < localCfg.DhcpStatus.length; i++) {
+				localCfg.DhcpStatus[i].DeviceClass = textTransfer($(".deviceBtn:eq(" + i + ")").text());
+				localCfg.DhcpStatus[i].Vendor = textTransfer($(".vendorBtn:eq(" + i + ")").text());	
 			}
 			
 			$(".progress-bar").each(function(index) {
