@@ -179,8 +179,17 @@ $(document).ready(function(){
 				} else {
 					$(this).attr("class", "scopebar progress-bar");
 				}
-				$(this).children().html(percentage + "%");
+				// $(this).children().html(percentage + "%");
 			});	
+
+			$(".barText").each(function(index){
+				var total = data.DhcpStatus[index].Total;
+				var used = data.DhcpStatus[index].Used;
+				var percentage = 100 * used/total;
+				percentage = Math.round(percentage * 100)/100;
+			
+				 $(this).html(percentage + "%");
+			});
 			
 		});
 		$.ajaxSettings.async = true;
