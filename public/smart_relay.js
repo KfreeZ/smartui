@@ -144,10 +144,29 @@ $(document).ready(function(){
 		$.ajaxSettings.async = true;
 	};
 
-	
-    $("#applyBtn").click(function() {
-       reflesh();
+
+
+
+	$("#applyBtn").click(function() {
+		myData={	};
+    	console.log(data);
+    	var aj = $.ajax( {    
+	        url:'apply',  
+	        data:myData,
+	        type:'post',    
+	        cache:true,  
+	        dataType:'json', 	
+	    	success:function(data) {                     
+	           	reflesh();
+        	},    
+        	error:function() {    
+            	alert("异常！");    
+        	} 
+	    });
 	});
+
+
+
 });
 		/*
         var myData = {  "mode": modeValue,
