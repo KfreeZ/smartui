@@ -170,7 +170,7 @@ $(document).ready(function(){
 				var percentage = 100 * used/total;
 				percentage = Math.round(percentage * 100)/100;
 			
-				 $(this).html(percentage + "%");
+				$(this).html(percentage + "%");
 			});
 			
 		});
