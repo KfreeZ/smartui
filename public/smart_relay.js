@@ -83,7 +83,11 @@ $(document).ready(function(){
 			var listNum = data.DhcpStatus.length;
 			
 			if (localCfg.Mode == "NULL") {
-				$("#modeText").text(data.Mode);
+				if (data.Mode == "FIFO") {
+					$("#modeText").text("SEQUENCED");
+				} else {
+					$("#modeText").text(data.Mode);
+				}
 			}
 			
 			if (listNum > oldListNum) {
