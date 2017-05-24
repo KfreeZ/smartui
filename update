@@ -1,0 +1,13 @@
+{
+"Mode":"SEQUENCED",
+"DhcpStatus" : 
+    [
+		{"Scope": "80.6.6.0 255.255.255.224", "DeviceClass":"NULL", "Vendor":"NULL","Total": 30, "Used": 30, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":28, "TotalReserved":1},
+        {"Scope": "80.6.6.128 255.255.255.224", "DeviceClass":"NULL", "Vendor":"NULL", "Total": 30, "Used": 30, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":10, "TotalReserved":3},
+        {"Scope": "80.6.6.160 255.255.255.224", "DeviceClass":"NULL", "Vendor":"NULL","Total": 30, "Used": 17, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":20, "TotalReserved":10},
+        {"Scope": "80.6.6.192 255.255.255.224",  "DeviceClass":"NULL", "Vendor":"NULL","Total": 30, "Used": 0, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":8, "TotalReserved":30},
+		{"Scope": "80.6.6.224 255.255.255.224", "DeviceClass":"NULL", "Vendor":"NULL","Total": 30, "Used": 0, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":2, "TotalReserved":40},
+		{"Scope": "80.6.6.32 255.255.255.224", "DeviceClass":"NULL", "Vendor":"NULL","Total": 30, "Used": 0, "Avail":25, "Unavail":0, "Deactivated":1, "Offered":0, "TotalDynamic":2, "TotalReserved":40}
+    ]
+	
+}

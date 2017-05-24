@@ -60,7 +60,7 @@ func applyHandler(w http.ResponseWriter, r *http.Request, title string) {
 
     var cfg AllInfo
     err := json.Unmarshal(rcvd, &cfg)
-	fmt.Printf("%s\n", cfg)
+	//fmt.Printf("%s\n", cfg)
 
 	if err != nil {
 		log.Println(err.Error())

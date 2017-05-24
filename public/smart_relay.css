@@ -1,39 +1,34 @@
-body{
-    /*padding-top: 70px;*/
-    /*padding-bottom:30px;*/
-    /*background-color:#CCC;*/
+body {
+	background-color: #FAFAFA;
 }
 
-hr.divider{
-    margin:40px 0;
+#applyBtn {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 120%
+}
+.rowDivider {
+    margin:13px 0;
 }
 
-hr.divider1{
-    margin:20px 0;
+.menuDivider {
+    margin:2px 0;
 }
 
-hr.divider2{
-    margin:30px 0;
-}
-
-.divider_modal{
+.divider_modal {
     margin:10px 0;
 }
-p.tabp2{
-    text-align:center;
-}
 
-.feature{
+.feature {
     padding:30px 0;
 }
-.feature-heading{
+.feature-heading {
     text-align:center;
     fonsize:50px;
     color: #2a6496;
     margin-top:50px;
 }
 
-div.modal-body{
+div.modal-body {
     text-align:center;
 }
 
@@ -46,7 +41,43 @@ div.modal-body{
     background-color: #333;
 }
 
+.scope {
+	padding: 0px 3px;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 120%;
+	font-weight: bold;
+	color: #3473B2;
+}
+.titleText {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 170%;
+	color: #CCCCCC; 
+}
+.vertical-center {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.barText {
+	font-size: 120%;
+}
+.vendorBtn {
+	font-size: 110%;
+}
+.deviceBtn {
+	font-size: 110%;
+}
+.vendorList	{
+	font-size: 95%;
+	width: 110px;
+}
+.deviceList	{
+	font-size: 95%;
+	width: 110px;
+}
+
 #detail_info{
-    font-size:18px;
+    font-size: 18px;
     text-align: left;
 }
+
