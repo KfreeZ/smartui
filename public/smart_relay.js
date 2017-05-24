@@ -16,7 +16,7 @@ $(document).ready(function(){
 		}
 		
         console.log("Mode changes to: " + localCfg.Mode)
-        $("#modeText").text(localCfg.Mode);
+        $("#modeText").text($(this).text());
     });
 
 	function maskToPrefix(mask) {
