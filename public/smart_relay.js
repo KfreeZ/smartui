@@ -76,8 +76,7 @@ $(document).ready(function(){
 	function reflesh() {
 		$.ajaxSettings.async = false;
 
-		// $.getJSON("./update", function(data) {
-		$.getJSON("./public/output.json", function(data) {
+		$.getJSON("./update", function(data) {
 		console.log(data)
 			var oldListNum = $(".scopeList").length;
 			var listNum = data.DhcpStatus.length;
@@ -152,7 +151,11 @@ $(document).ready(function(){
 				});						
 			});
 			
-			localCfg.Mode = $("#modeText").text();
+			if ($("#modeText").text() == "SEQUENCED") {
+				localCfg.Mode = "FIFO";				
+			} else {
+				localCfg.Mode = $("#modeText").text();
+			}
 			localCfg.DhcpStatus = data.DhcpStatus;
 			for (i = 0; i < localCfg.DhcpStatus.length; i++) {
 				localCfg.DhcpStatus[i].DeviceClass = textTransfer($(".deviceBtn:eq(" + i + ")").text());
