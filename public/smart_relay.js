@@ -76,8 +76,8 @@ $(document).ready(function(){
 	
 	function reflesh() {
 		$.ajaxSettings.async = false;
-		$.getJSON("./update", function(data) {
-		// $.getJSON("./public/output.json", function(data) {
+		// $.getJSON("./update", function(data) {
+		$.getJSON("./public/output.json", function(data) {
 		console.log(data)
 			var oldListNum = $(".scopeList").length;
 			var listNum = data.DhcpStatus.length;
